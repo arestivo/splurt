@@ -2,14 +2,15 @@ import {Article} from '../data/Article'
 import {Scraper} from './Scraper'
 
 class DBLPScraper extends Scraper {
+  uri : string = 'http://dblp.org/search/publ/api'
+
   async query(q : string): Promise<any> {
-    this.get('http://dblp.org/search/publ/api', {q : q, format : 'json'})
-      .then(function (response) {
-        let hits = response.data.result.hits.hit
-        let articles = hits.map(function(hit : any) {
-          return {title: hit.info.title}
-        })
-      })
+    return this.get(this.uri, {q : q, format : 'json'})
+    .then(function (response) {
+      return response.data.result.hits.hit.map(
+        (hit : any) => ({title: hit.info.title, year: hit.info.year})
+      )
+    })
   }
 }
 

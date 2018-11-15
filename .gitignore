@@ -62,5 +62,5 @@ typings/
 
 .vscode
 
-src//*.js
-src//*.js.map
+**/*.js
+**/*.js.map

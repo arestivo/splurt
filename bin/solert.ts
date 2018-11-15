@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { DBLPScraper } from '../src/scraper/DBLPScraper'
+import { Article } from '../src/data/Article';
 
 let minimist = require('minimist')
 
@@ -25,4 +26,7 @@ if (!args['dblp']) {
 if (args['dblp']) {
   let dblp = new DBLPScraper()
   dblp.query(args['q'])
+  .then(function(articles : any[]) {
+    console.log(articles)
+  })
 }
