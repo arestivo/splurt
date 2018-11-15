@@ -6,13 +6,11 @@ class DBLPScraper extends Scraper {
     this.get('http://dblp.org/search/publ/api', {q : q, format : 'json'})
       .then(function (response) {
         let hits = response.data.result.hits.hit
-        hits.forEach((hit : any) => {
-          console.log(hit.info.title)
-        });
+        let articles = hits.map(function(hit : any) {
+          return {title: hit.info.title}
+        })
       })
-  return [new Article()]
   }
-
 }
 
 export {DBLPScraper}

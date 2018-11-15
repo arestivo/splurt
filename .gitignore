@@ -61,3 +61,6 @@ typings/
 .next
 
 .vscode
+
+src//*.js
+src//*.js.map
