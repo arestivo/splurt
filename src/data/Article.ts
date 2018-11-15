@@ -1,5 +1,3 @@
-class Article {
-  
+export interface Article {
+   title: string;
 }
-
-export {Article}

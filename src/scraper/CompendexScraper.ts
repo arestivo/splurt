@@ -1,12 +1,12 @@
 import {Article} from '../data/Article'
 import {Scraper} from './Scraper'
 
-type CompendexResult = {
+interface CompendexResult {
     title: string;
     source: string;
 }
 
-type CompendexResponse = {
+interface CompendexResponse {
     results: CompendexResult[];
 
 }
