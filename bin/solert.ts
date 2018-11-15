@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import { DBLPScraper } from '../src/scraper/DBLPScraper'
-import { Article } from '../src/data/Article';
 
 let minimist = require('minimist')
 
