@@ -25,4 +25,7 @@ if (!args['dblp']) {
 if (args['dblp']) {
   let dblp = new DBLPScraper()
   dblp.query(args['q'])
+  .then(function(articles : any[]) {
+    console.log(articles)
+  })
 }
