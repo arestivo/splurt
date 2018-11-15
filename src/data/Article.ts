@@ -1,0 +1,5 @@
+class Article {
+  
+}
+
+export {Article}

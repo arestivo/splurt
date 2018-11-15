@@ -1,0 +1,31 @@
+{
+  "name": "solert",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "solert": "./bin/solert.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha --require ts-node/register test/**/*.ts"
+  },
+  "keywords": [],
+  "author": "André Restivo",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^10.12.8",
+    "axios": "^0.18.0",
+    "minimist": "^1.2.0",
+    "npm": "^6.4.1"
+  }
+}
