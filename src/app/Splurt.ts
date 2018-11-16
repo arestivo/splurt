@@ -1,10 +1,12 @@
 import { DBLPScraper } from "../scraper/DBLPScraper"
 import { Article } from "../data/Article";
+import Color from 'colors'
 
 class Splurt {
   dblp: boolean = false
   scopus : boolean = false
   compendex: boolean = false
+  inspec: boolean = false
 
   maximum: number = 10
 
@@ -28,6 +30,16 @@ class Splurt {
 
     if (!this.query)
       throw new Error('No query given!')
+  }
+
+  addDatabase(database: string) {
+    switch(database) {
+      case 'dblp': this.dblp = true; break;
+      case 'scopus': this.dblp = true; break;
+      case 'compendex': this.compendex = true; break;
+      case 'inspec': this.inspec = true; break;
+      default: console.log(Color.yellow('Unknown database: ' + database))
+    }
   }
 }
 
