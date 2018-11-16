@@ -1,5 +1,4 @@
 import { DBLPScraper } from "../scraper/DBLPScraper"
-import { Scraper } from "../scraper/Scraper";
 import { Article } from "../data/Article";
 import Color from 'colors'
 
