@@ -24,7 +24,7 @@
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.12.8",
     "axios": "^0.18.0",
-    "minimist": "^1.2.0",
+    "commander": "^2.19.0",
     "npm": "^6.4.1",
     "ts-node": "^7.0.1"
   }
