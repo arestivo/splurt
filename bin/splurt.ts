@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { DBLPScraper } from '../src/scraper/DBLPScraper'
+import { Splurt } from '../src/app/Splurt'
 
 let minimist = require('minimist')
 
@@ -10,22 +10,18 @@ var args = minimist(process.argv.slice(2), {
   alias: { q: 'query' }
 })
 
+const splurt = new Splurt
+
 if (!args['q']) {
   console.log('No query given!')
   console.log('Try adding option: --query \'blockchain\'')
   process.exit()
-}
+} else splurt.query = args['q']
 
 if (!args['dblp']) {
   console.log('No research database chosen!')
   console.log('Try adding option: --dblp')
   process.exit()
-}
+} else splurt.dblp = true
 
-if (args['dblp']) {
-  let dblp = new DBLPScraper()
-  dblp.query(args['q'])
-  .then(function(articles : any[]) {
-    console.log(articles)
-  })
-}
+splurt.execute()
