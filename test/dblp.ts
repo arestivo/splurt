@@ -30,4 +30,17 @@ describe('DBLPScraper', () => {
     }, done)
   })
 
+  it('should contain only the right amount of articles', (done) => {
+    let dblp = new DBLPScraper()
+    dblp.query('blockchain', 5)
+    .then(function(articles) {
+      try {
+        expect(articles.length).to.be.equal(5)
+        done()  
+      } catch(err) {
+        done(err)
+      }
+    }, done)
+  })
+
 })
