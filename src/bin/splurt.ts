@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { Splurt } from '../app/Splurt'
-import program from 'commander';
+import program from 'commander'
+import Color from 'colors'
 
 program
   .version('0.0.1')
@@ -16,18 +17,6 @@ program
 
   .parse(process.argv);
 
-if (!program.dblp && !program.compendex && !program.scopus) {
-  console.log('No research database chosen!')
-  console.log('Try adding option: --dblp')
-  process.exit()
-}
-
-if (!program.query) {
-  console.log('No query given!')
-  console.log('Try adding option: --query \'blockchain\'')
-  process.exit()
-}
-
 const splurt = new Splurt
 
 splurt.query = program.query
@@ -38,4 +27,8 @@ splurt.scopus = program.scopus
 
 splurt.maximum = program.max
 
-splurt.execute()
+try {
+  splurt.execute()
+} catch(e) {
+  console.log(Color.red(e.message))
+}

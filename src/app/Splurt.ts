@@ -11,6 +11,8 @@ class Splurt {
   query: string = ''
 
   execute() {
+    this.verifyOptions()
+
     if (this.dblp) {
       const dblp = new DBLPScraper()
       dblp.query(this.query, this.maximum)
@@ -18,6 +20,14 @@ class Splurt {
         console.log(articles)
       })
     }
+  }
+
+  verifyOptions() {
+    if (!this.dblp && !this.compendex && !this.scopus)
+      throw new Error('No research database chosen!')
+
+    if (!this.query)
+      throw new Error('No query given!')
   }
 }
 
