@@ -1,10 +1,10 @@
 {
-  "name": "solert",
-  "version": "0.0.2",
+  "name": "splurt",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "bin": {
-    "solert": "./bin/solert.js"
+    "splurt": "./bin/splurt.js"
   },
   "scripts": {
     "build": "tsc",

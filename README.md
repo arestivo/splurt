@@ -1,2 +1,3 @@
-# solert
-A Systematic Literate Review helper tool in TypeScript
+# SpLuRT
+
+Systematic Literate Review Tool
