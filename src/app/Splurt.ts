@@ -1,4 +1,5 @@
 import { DBLPScraper } from "../scraper/DBLPScraper"
+import { Scraper } from "../scraper/Scraper";
 import { Article } from "../data/Article";
 import Color from 'colors'
 
@@ -9,21 +10,22 @@ class Splurt {
   maximum: number = 10
   databases: string[] = []
 
-  execute() {
+  async execute() {
     this.verifyOptions()
 
-    this.databases.forEach(database => {
+    const promises : Promise<Article[]>[] = this.databases.map(database => {
       switch (database) {
         case 'dblp': 
-          dblp.query(this.query, this.maximum)
-          .then(function(articles : Article[]) {
-            console.log(articles)
-          });
-          break;
-        default:
+          return dblp.query(this.query, this.maximum)
+        default:        
           console.warn(Color.yellow('WARNING: Unknown research database: ' + database))
+          return Promise.resolve([])
       }
     })
+
+    const results : Article[][] = await Promise.all(promises)
+
+    console.log(results.reduce((acc, val) => acc.concat(val), []))
   }
 
   verifyOptions() {
