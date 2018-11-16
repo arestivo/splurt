@@ -20,10 +20,16 @@ Example:
 splurt -q 'blockchain AND cloud' -d 'dblp,scopus' -m 20
 ```
 
-Project .yaml file example: 
+Project ```project.yaml``` file example: 
 
 ```
-query: 'blockchain'
+query: 'blockchain AND cloud'
 databases: [dblp,scopus]
-maximum: 10
+maximum: 20
+```
+
+Example:
+
+```
+splurt -p project.yaml
 ```
