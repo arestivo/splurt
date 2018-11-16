@@ -12,6 +12,8 @@ program
   .option('--compendex', 'Search Compendex database')
   .option('--scopus', 'Search Scopus database')
 
+  .option('-m, --max [n]', 'Maximum number of results', 10)
+
   .parse(process.argv);
 
 if (!program.dblp && !program.compendex && !program.scopus) {
@@ -33,5 +35,7 @@ splurt.query = program.query
 splurt.dblp = program.dblp
 splurt.compendex = program.compendex
 splurt.scopus = program.scopus
+
+splurt.maximum = program.max
 
 splurt.execute()

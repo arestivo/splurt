@@ -5,12 +5,14 @@ class Splurt {
   scopus : boolean = false
   compendex: boolean = false
 
+  maximum: number = 10
+
   query: string = ''
 
   execute() {
     if (this.dblp) {
       const dblp = new DBLPScraper()
-      dblp.query(this.query)
+      dblp.query(this.query, this.maximum)
       .then(function(articles : any[]) {
         console.log(articles)
       })
