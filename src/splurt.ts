@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { Splurt } from '../src/app/Splurt'
-const program = require('commander');
+import { Splurt } from './app/Splurt'
+import program from 'commander';
 
 program
   .version('0.0.1')
