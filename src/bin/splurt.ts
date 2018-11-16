@@ -5,15 +5,15 @@ import program from 'commander'
 import Color from 'colors'
 import YAML from 'yamljs'
 
-function list(val : string) : string[] {
-  return val.split(',');
+function list(l : string) : string[] {
+  return l.split(',').map(v => v.trim());
 }
 
 program
   .version('0.0.1')
 
   .option('-q, --query <q>', 'Search query')
-  .option('--databases <list>', 'Comma separated list of databases to search.')
+  .option('-d, --databases <list>', 'Comma separated list of databases to search.', list)
   .option('-m, --max [n]', 'Maximum number of results.', 10)
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
@@ -30,7 +30,7 @@ if (program.project) {
     splurt.maximum = options.maximum
     splurt.databases = options.databases
   } catch (e) {
-    console.log(Color.red(e.message))
+    console.error(Color.red(e.message))
     process.exit()
   }
 } else {
@@ -42,5 +42,5 @@ if (program.project) {
 try {
   splurt.execute()
 } catch(e) {
-  console.log(Color.red(e.message))
+  console.error(Color.red(e.message))
 }

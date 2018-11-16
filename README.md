@@ -3,18 +3,21 @@
 Systematic Literate Review Tool
 
 ```
-Usage: splurt.ts [options]
+Usage: splurt [options]
 
 Options:
-  -V, --version         output the version number
-  -q, --query <q>       Search query
-  -p, --project <file>  Read config from project file
-  --dblp                Search DBLP database
-  --compendex           Search Compendex database
-  --scopus              Search Scopus database
-  --inspec              Search Inspec database
-  -m, --max [n]         Maximum number of results (default: 10)
-  -h, --help            output usage information
+  -V, --version           output the version number
+  -q, --query <q>         Search query
+  -d, --databases <list>  Comma separated list of databases to search.
+  -m, --max [n]           Maximum number of results. (default: 10)
+  -p, --project <file>    Read config from project YAML file.
+  -h, --help              output usage information
+```
+
+Example:
+
+```
+splurt -q 'blockchain AND cloud' -d 'dblp,scopus' -m 20
 ```
 
 Project .yaml file example: 
