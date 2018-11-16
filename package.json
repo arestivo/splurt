@@ -2,9 +2,9 @@
   "name": "splurt",
   "version": "0.0.1",
   "description": "",
-  "main": "./src/splurt.js",
+  "main": "./src/bin/splurt.js",
   "bin": {
-    "splurt": "./src/splurt.js"
+    "splurt": "./src/bin/splurt.js"
   },
   "scripts": {
     "build": "tsc",
