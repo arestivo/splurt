@@ -1,7 +1,7 @@
 import { Article } from "../data/Article"
 import axios, { AxiosRequestConfig } from 'axios'
 
-abstract class Scraper {
+abstract class ArticleScraper {
   abstract async query(q : string, maximum : number) : Promise<Article[]>
 
   get(url : string, params : any) {
@@ -9,4 +9,4 @@ abstract class Scraper {
   }
 }
 
-export {Scraper}
+export {ArticleScraper}

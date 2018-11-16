@@ -1,10 +1,10 @@
 import { expect } from 'chai'
-import { DBLPScraper } from '../src/scraper/DBLPScraper'
+import { DBLPArticleScraper } from '../src/scraper/DBLPScraper'
 
 describe('DBLPScraper', () => {
 
   it('should return articles', (done) => {
-    const dblp = new DBLPScraper()
+    const dblp = new DBLPArticleScraper()
     dblp.query('blockchain')
     .then(function(articles) {
       try {
@@ -17,7 +17,7 @@ describe('DBLPScraper', () => {
   }),
 
   it('should contain relevant articles only', (done) => {
-    const dblp = new DBLPScraper()
+    const dblp = new DBLPArticleScraper()
     dblp.query('blockchain')
     .then(function(articles) {
       try {
@@ -31,7 +31,7 @@ describe('DBLPScraper', () => {
   })
 
   it('should contain only the right amount of articles', (done) => {
-    const dblp = new DBLPScraper()
+    const dblp = new DBLPArticleScraper()
     dblp.query('blockchain', 5)
     .then(function(articles) {
       try {

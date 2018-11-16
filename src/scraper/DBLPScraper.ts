@@ -1,8 +1,8 @@
 import {Article} from '../data/Article'
-import {Scraper} from './Scraper'
+import {ArticleScraper} from './ArticleScraper'
 import { addListener } from 'cluster';
 
-class DBLPScraper extends Scraper {
+class DBLPArticleScraper extends ArticleScraper {
   uri : string = 'http://dblp.org/search/publ/api'
 
   async query(q : string, maximum : number = 10): Promise<Article[]> {
@@ -37,4 +37,4 @@ class DBLPScraper extends Scraper {
   }
 }
 
-export {DBLPScraper}
+export {DBLPArticleScraper}

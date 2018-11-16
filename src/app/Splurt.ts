@@ -1,8 +1,8 @@
-import { DBLPScraper } from "../scraper/DBLPScraper"
+import { DBLPArticleScraper } from "../scraper/DBLPScraper"
 import { Article } from "../data/Article";
 import Color from 'colors'
 
-const dblp = new DBLPScraper()
+const dblp = new DBLPArticleScraper()
 
 class Splurt {
   query: string = ''
