@@ -20,8 +20,9 @@ class DBLPScraper extends Scraper {
   }
 
   async queryPage(q : string, f : number) : Promise<Article[]> {
-    const articles = await this.get(this.uri, {q, f, format : 'json'})
-    return articles.data.result.hits.hit ? articles.data.result.hits.hit.map(
+    const json = await this.get(this.uri, {q, f, format : 'json'})
+    const elements = json.data.result.hits.hit
+    return elements ? elements.map(
       (hit : any) => ({
         origin: 'dblp',
         title: hit.info.title, 
@@ -30,9 +31,9 @@ class DBLPScraper extends Scraper {
         authors: hit.info.authors ? (
             Array.isArray(hit.info.authors.author) ? 
             hit.info.authors.author.join(', ') : 
-            hit.info.authors.author ) : undefined
+            hit.info.authors.author ) : undefined // Undefined author
       })
-    ) : []
+    ) : [] // No articles
   }
 }
 
