@@ -5,19 +5,18 @@ import program from 'commander'
 import Color from 'colors'
 import YAML from 'yamljs'
 
+function list(val : string) : string[] {
+  return val.split(',');
+}
+
 program
   .version('0.0.1')
 
   .option('-q, --query <q>', 'Search query')
+  .option('--databases <list>', 'Comma separated list of databases to search.')
+  .option('-m, --max [n]', 'Maximum number of results.', 10)
 
-  .option('-p, --project <file>', 'Read config from project file')
-
-  .option('--dblp', 'Search DBLP database')
-  .option('--compendex', 'Search Compendex database')
-  .option('--scopus', 'Search Scopus database')
-  .option('--inspec', 'Search Inspec database')
-
-  .option('-m, --max [n]', 'Maximum number of results', 10)
+  .option('-p, --project <file>', 'Read config from project YAML file.')
 
   .parse(process.argv);
 
@@ -29,20 +28,14 @@ if (program.project) {
 
     splurt.query = options.query
     splurt.maximum = options.maximum
-
-    if (options.databases)
-      options.databases.forEach((database : string) => splurt.addDatabase(database))
+    splurt.databases = options.databases
   } catch (e) {
     console.log(Color.red(e.message))
     process.exit()
   }
 } else {
   splurt.query = program.query
-  splurt.dblp = program.dblp
-  splurt.compendex = program.compendex
-  splurt.scopus = program.scopus
-  splurt.inspec = program.inspec
-  
+  splurt.databases = program.databases  
   splurt.maximum = program.max
 }
 
