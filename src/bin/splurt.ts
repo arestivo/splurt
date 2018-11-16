@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Splurt } from './app/Splurt'
+import { Splurt } from '../app/Splurt'
 import program from 'commander';
 
 program
