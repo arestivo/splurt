@@ -1,7 +1,7 @@
 import { expect } from 'chai'
-import { DBLPArticleScraper } from '../src/scraper/DBLPScraper'
+import { DBLPArticleScraper } from '../src/scraper/DBLPArticleScraper'
 
-describe('DBLPScraper', () => {
+describe('DBLPArticleScraper', () => {
 
   it('should return articles', (done) => {
     const dblp = new DBLPArticleScraper()

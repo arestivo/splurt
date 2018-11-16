@@ -1,6 +1,5 @@
 import {Article} from '../data/Article'
 import {ArticleScraper} from './ArticleScraper'
-import { addListener } from 'cluster';
 
 class DBLPArticleScraper extends ArticleScraper {
   uri : string = 'http://dblp.org/search/publ/api'

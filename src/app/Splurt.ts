@@ -1,4 +1,4 @@
-import { DBLPArticleScraper } from "../scraper/DBLPScraper"
+import { DBLPArticleScraper } from "../scraper/DBLPArticleScraper"
 import { Article } from "../data/Article";
 import Color from 'colors'
 

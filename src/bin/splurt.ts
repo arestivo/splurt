@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Splurt } from '../app/Splurt'
+
 import program from 'commander'
 import Color from 'colors'
 import YAML from 'yamljs'
