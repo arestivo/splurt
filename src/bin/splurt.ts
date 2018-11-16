@@ -24,26 +24,27 @@ program
 const splurt = new Splurt
 
 if (program.project) {
-try {
-  const options = YAML.load(program.project)
+  try {
+    const options = YAML.load(program.project)
 
-  splurt.query = options.query
-  splurt.maximum = options.maximum
+    splurt.query = options.query
+    splurt.maximum = options.maximum
 
-  if (options.databases)
-    options.databases.forEach((database : string) => splurt.addDatabase(database))
+    if (options.databases)
+      options.databases.forEach((database : string) => splurt.addDatabase(database))
   } catch (e) {
     console.log(Color.red(e.message))
+    process.exit()
   }
+} else {
+  splurt.query = program.query
+  splurt.dblp = program.dblp
+  splurt.compendex = program.compendex
+  splurt.scopus = program.scopus
+  splurt.inspec = program.inspec
+  
+  splurt.maximum = program.max
 }
-
-splurt.query = program.query ? program.query : splurt.query
-splurt.dblp = program.dblp ? program.dblp : splurt.dblp 
-splurt.compendex = program.compendex ? program.compendex : splurt.compendex 
-splurt.scopus = program.scopus ? program.scopus : splurt.scopus
-splurt.inspec = program.inspec ? program.inspec : splurt.inspec
-
-splurt.maximum = program.max ? program.max : splurt.maximum
 
 try {
   splurt.execute()
