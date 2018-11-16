@@ -5,7 +5,7 @@ class DBLPScraper extends Scraper {
   uri : string = 'http://dblp.org/search/publ/api'
 
   async query(q : string): Promise<any> {
-    let articles = await this.get(this.uri, {q, format : 'json'})
+    const articles = await this.get(this.uri, {q, format : 'json'})
     return articles.data.result.hits.hit.map(
       (hit : any) => ({
         title: hit.info.title, 

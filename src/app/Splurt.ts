@@ -9,7 +9,7 @@ class Splurt {
 
   execute() {
     if (this.dblp) {
-      let dblp = new DBLPScraper()
+      const dblp = new DBLPScraper()
       dblp.query(this.query)
       .then(function(articles : any[]) {
         console.log(articles)
