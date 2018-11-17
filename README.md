@@ -5,7 +5,7 @@ Systematic Literate Review Tool
 ## Install
 
 ```
-npm install splurt -g
+sudo npm install -g --unsafe-perm splurt
 ```
 
 ## Fetch

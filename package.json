@@ -1,6 +1,6 @@
 {
   "name": "splurt",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "description": "Systematic Literate Review Tool",
   "repository": {
     "type": "git",
@@ -8,10 +8,13 @@
   },
   "main": "./src/bin/splurt.js",
   "bin": {
-    "splurt": "./src/bin/splurt.js"
+    "splurt": "./src/bin/splurt.js",
+    "splurt-fetch": "./src/bin/splurt-fetch.js",
+    "splurt-complete": "./src/bin/splurt-complete.js"
   },
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "tsc",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },
   "keywords": [],
@@ -22,7 +25,8 @@
     "@types/mocha": "^5.2.5",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "ts-node": "^7.0.1"
   },
   "dependencies": {
     "@types/cheerio": "^0.22.9",
@@ -37,7 +41,6 @@
     "es6-promise-pool": "^2.5.0",
     "npm": "^6.4.1",
     "sqlite3": "^4.0.4",
-    "ts-node": "^7.0.1",
     "yamljs": "^0.3.0"
   }
 }

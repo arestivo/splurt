@@ -18,7 +18,7 @@ class GoogleCiteScraper extends CiteScraper{
     
     const html = await this.get(
       'https://scholar.google.com/scholar', 
-      {q : article.title}, {
+      {q : article.title + ' ' + article.authors?article.authors:''}, {
         Cookie: this.cookie
       }
     )
