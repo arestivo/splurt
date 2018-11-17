@@ -20,17 +20,17 @@ class DBLPArticleScraper extends ArticleScraper {
 
   async queryPage(q : string, f : number) : Promise<Article[]> {
     const json = await this.get(this.uri, {q, f, format : 'json'})
-    const elements = json.data.result.hits.hit
-    return elements ? elements.map(
-      (hit : any) => ({
+    const elements : any[] = json.data.result.hits.hit
+    return elements ? elements.map(e => e.info).map(
+      (i : any) => ({
         origin: 'dblp',
-        title: hit.info.title, 
-        year: hit.info.year,
-        doi: hit.info.doi,
-        authors: hit.info.authors ? (
-            Array.isArray(hit.info.authors.author) ? 
-            hit.info.authors.author.join(', ') : 
-            hit.info.authors.author ) : undefined // Undefined author
+        title: i.title,
+        year: i.year,
+        doi: i.doi,
+        authors: i.authors ? (
+            Array.isArray(i.authors.author) ? 
+            i.authors.author.join(', ') : 
+            i.authors.author ) : undefined // Undefined author
       })
     ) : [] // No articles
   }
