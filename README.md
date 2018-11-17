@@ -45,12 +45,12 @@ splurt fetch -q 'blockchain AND cloud' -d 'dblp,scopus' -m 20 -s articles.db
 ```
 
 ```
-splurt complete -s articles.db -c 'COOKIE'
+splurt complete -s articles.db -c 'COOKIE=value'
 ```
 
 ## Project
 
-Project ```project.yaml``` file example: 
+Project ```project.yaml``` file example for *fetch*: 
 
 ```
 query: 'blockchain AND cloud'
@@ -58,8 +58,16 @@ databases: [dblp,scopus]
 maximum: 20
 ```
 
+Project ```project.yaml``` file example for *complete*: 
+
+```
+delay: 2
+cookie: 'COOKIE=value'
+```
+
 Using projects:
 
 ```
 splurt fetch -p project.yaml -s articles.db
+splurt complete -p project.yaml -s articles.db
 ```
