@@ -12,7 +12,7 @@ class SplurtComplete extends SplurtCommand {
   async execute() {
     this.verifyOptions()
 
-    const google = new GoogleCiteScraper(this.cookie)
+    const google = new GoogleCiteScraper(this.delay, this.cookie)
 
     if (this.sqlite != undefined) {
       const database = new ArticleDatabase(this.sqlite)

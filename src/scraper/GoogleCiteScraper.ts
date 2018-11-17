@@ -4,15 +4,17 @@ import cheerio from 'cheerio';
 import delay from 'delay';
 
 class GoogleCiteScraper extends CiteScraper{
+  delay : number = 2
   cookie : string | undefined
 
-  constructor(cookie : string | undefined) {
+  constructor(delay : number, cookie : string | undefined) {
     super()
+    if (delay) this.delay = 2
     this.cookie = cookie
   }
 
   async getCiteCount(article: Article) : Promise<number | undefined> {
-    await delay(Math.random() * 2000)
+    await delay(Math.random() * (this.delay * 1000))
     
     const html = await this.get(
       'https://scholar.google.com/scholar', 
