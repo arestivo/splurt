@@ -48,7 +48,7 @@ splurt.execute()
 
     if (program.sqlite) {
       const database = new ArticleDatabase(program.sqlite)
-      // Todo: There has to be a better way to do this
+      // TODO: There has to be a better way to do this
       setTimeout(function() {
         database.replace(articles) 
       }, 1000)

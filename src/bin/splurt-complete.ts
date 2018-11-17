@@ -39,7 +39,9 @@ splurt.cookie = program.cookie ? program.cookie : splurt.cookie
 splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite 
 
 try {  
-  splurt.execute()
+  splurt.execute().catch(function(e){
+    console.error(Color.red(e.message))
+  })
 } catch(e) {
   console.error(Color.red(e.message))
 }
