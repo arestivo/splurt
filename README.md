@@ -8,6 +8,18 @@ Systematic Literate Review Tool
 sudo npm install -g --unsafe-perm splurt
 ```
 
+or locally:
+
+```
+sudo npm install splurt
+```
+
+but then, executable will be in
+
+```
+<INSTALL_DIR>/node_modules/.bin/splurt
+```
+
 ## Fetch
 
 ```
