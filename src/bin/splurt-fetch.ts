@@ -36,11 +36,11 @@ if (program.project) {
     console.error(Color.red(e.message))
     process.exit()
   }
-} else {
-  splurt.query = program.query
-  splurt.databases = program.databases  
-  splurt.maximum = program.max  
-}
+} 
+
+splurt.query = program.query ? program.query : splurt.query
+splurt.databases = program.databases ? program.databases : splurt.databases  
+splurt.maximum = program.max ? program.max : splurt.maximum
 
 splurt.execute()
   .then(function(articles) {

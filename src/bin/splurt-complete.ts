@@ -32,11 +32,11 @@ if (program.project) {
     console.error(Color.red(e.message))
     process.exit()
   }
-} else {
-  splurt.delay = program.delay
-  splurt.cookie = program.cookie  
-  splurt.sqlite = program.sqlite  
-}
+} 
+
+splurt.delay = program.delay ? program.delay : splurt.delay
+splurt.cookie = program.cookie ? program.cookie : splurt.cookie  
+splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite 
 
 try {  
   splurt.execute()
