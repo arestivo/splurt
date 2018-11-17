@@ -67,7 +67,7 @@ class ArticleDatabase {
                 article.year,
                 article.doi,
                 article.authors
-                ) 
+              ) 
             }
           })
         })
