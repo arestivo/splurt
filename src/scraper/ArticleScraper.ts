@@ -1,12 +1,11 @@
 import { Article } from "../data/Article"
+import { Scraper } from "./Scraper";
 import axios, { AxiosRequestConfig } from 'axios'
 
-abstract class ArticleScraper {
-  abstract async query(q : string, maximum : number) : Promise<Article[]>
-
+abstract class ArticleScraper extends Scraper{
   get(url : string, params : any) {
     return axios.get('http://dblp.org/search/publ/api', {params: params})
   }
 }
 
-export {ArticleScraper}
+export { ArticleScraper }

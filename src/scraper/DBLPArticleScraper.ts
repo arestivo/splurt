@@ -36,4 +36,4 @@ class DBLPArticleScraper extends ArticleScraper {
   }
 }
 
-export {DBLPArticleScraper}
+export { DBLPArticleScraper }

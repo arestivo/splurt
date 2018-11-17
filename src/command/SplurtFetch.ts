@@ -4,7 +4,7 @@ import Color from 'colors'
 
 const dblp = new DBLPArticleScraper()
 
-class Splurt {
+class SplurtFetch {
   query: string = ''
   maximum: number = 10
   databases: string[] = []
@@ -22,13 +22,14 @@ class Splurt {
       }
     })
 
-    const results : Article[][] = await Promise.all(promises)
+    const articles : Article[] = (await Promise.all(promises))
+      .reduce((acc, val) => acc.concat(val), [])
 
-    console.log(results.reduce((acc, val) => acc.concat(val), []))
+    return articles
   }
 
   verifyOptions() {
-    if (this.databases.length == 0)
+    if (!this.databases || this.databases.length == 0)
       throw new Error('No research database chosen!')
 
     if (!this.query)
@@ -36,4 +37,4 @@ class Splurt {
   }
 }
 
-export {Splurt}
+export { SplurtFetch }

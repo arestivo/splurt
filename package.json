@@ -1,7 +1,11 @@
 {
   "name": "splurt",
   "version": "0.0.1",
-  "description": "",
+  "description": "Systematic Literate Review Tool",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arestivo/splurt.git"
+  },
   "main": "./src/bin/splurt.js",
   "bin": {
     "splurt": "./src/bin/splurt.js"
@@ -21,12 +25,18 @@
     "typescript": "^3.1.6"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.9",
     "@types/node": "^10.12.8",
+    "@types/sqlite3": "^3.1.3",
     "@types/yamljs": "^0.2.30",
     "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "colors": "^1.3.2",
     "commander": "^2.19.0",
+    "delay": "^4.1.0",
+    "es6-promise-pool": "^2.5.0",
     "npm": "^6.4.1",
+    "sqlite3": "^4.0.4",
     "ts-node": "^7.0.1",
     "yamljs": "^0.3.0"
   }
