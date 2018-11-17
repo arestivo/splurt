@@ -1,4 +1,4 @@
-#!/usr/bin/program node
+#!/usr/bin/env node
 
 import { SplurtComplete } from '../command/SplurtComplete'
 
