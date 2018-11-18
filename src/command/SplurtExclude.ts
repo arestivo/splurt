@@ -1,9 +1,9 @@
-import { SplurtCommand } from './SplurtCommand';
-import { ArticleDatabase } from '../database/ArticleDatabase';
+import { ArticleDatabase } from '../database/ArticleDatabase'
+import { SplurtCommand } from './SplurtCommand'
 
 import Color from 'colors'
 
-class SplurtExclude implements SplurtCommand {
+export class SplurtExclude implements SplurtCommand {
   public criteria?: string[]
   public sqlite?: string
 
@@ -29,5 +29,3 @@ class SplurtExclude implements SplurtCommand {
       throw new Error('No sqlite database chosen!')
   }
 }
-
-export { SplurtExclude }

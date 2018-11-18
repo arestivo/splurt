@@ -26,7 +26,8 @@
             "ban-single-arg-parens"
         ],
         "curly": false,
-        "no-unused-expression": false
+        "no-unused-expression": false,
+        "interface-name": false
     },
     "rulesDirectory": []
 }

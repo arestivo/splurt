@@ -1,10 +1,11 @@
+import { Article } from '../data/Article'
 import { DBLPArticleScraper } from '../scraper/DBLPArticleScraper'
-import { Article } from '../data/Article';
+
 import Color from 'colors'
 
 const dblp = new DBLPArticleScraper()
 
-class SplurtFetch {
+export class SplurtFetch {
   public query: string = ''
   public maximum: number = 10
   public databases: string[] = []
@@ -36,5 +37,3 @@ class SplurtFetch {
       throw new Error('No query given!')
   }
 }
-
-export { SplurtFetch }
