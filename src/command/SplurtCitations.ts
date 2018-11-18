@@ -28,7 +28,7 @@ export class SplurtCitations implements SplurtCommand {
           const bar = new Bar({}, progress.Presets.shades_classic)
           bar.start(articles.length, 0)
 
-          for (let i = 0; i < articles.length; i++)
+          for (let i = 0; i < articles.length; i += 1)
             try {
               const cites = await google.getCiteCount(articles[i])
               database.updateCites(articles[i].title, cites)

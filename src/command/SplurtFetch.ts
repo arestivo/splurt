@@ -13,12 +13,12 @@ export class SplurtFetch {
   public async execute() {
     this.verifyOptions()
 
-    const promises: Array<Promise<Article[]>> = this.databases.map(database => {
+    const promises: Promise<Article[]>[] = this.databases.map(database => {
       switch (database) {
         case 'dblp':
           return dblp.query(this.query, this.maximum)
         default:
-          console.warn(Color.yellow('WARNING: Unknown research database: ' + database))
+          console.warn(Color.yellow(`WARNING: Unknown research database: ${database}`))
           return Promise.resolve([])
       }
     })

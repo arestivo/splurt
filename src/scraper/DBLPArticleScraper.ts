@@ -1,5 +1,5 @@
-import {Article} from '../data/Article'
-import {ArticleScraper} from './ArticleScraper'
+import { Article } from '../data/Article'
+import { ArticleScraper } from './ArticleScraper'
 
 import progress, { Bar } from 'cli-progress'
 
@@ -28,7 +28,7 @@ export class DBLPArticleScraper extends ArticleScraper {
   }
 
   public async queryPage(q: string, f: number, maximum: number): Promise<Article[]> {
-    const json = await this.get(this.uri, {q, f, format : 'json'})
+    const json = await this.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
 
     this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
@@ -42,7 +42,7 @@ export class DBLPArticleScraper extends ArticleScraper {
         authors: i.authors ? (
             Array.isArray(i.authors.author) ?
             i.authors.author.join(', ') :
-            i.authors.author ) : undefined // Undefined author
+            i.authors.author) : undefined // Undefined author
       })
     ) : [] // No articles
   }
