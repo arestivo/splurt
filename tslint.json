@@ -28,7 +28,9 @@
         "curly": false,
         "no-unused-expression": false,
         "interface-name": false,
-        "max-line-length": false
+        "max-line-length": false,
+        "object-literal-sort-keys": false,
+        "trailing-comma": false
     },
     "rulesDirectory": []
 }

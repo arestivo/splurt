@@ -3,7 +3,7 @@ import {ArticleScraper} from './ArticleScraper'
 
 import progress, { Bar } from 'cli-progress'
 
-class DBLPArticleScraper extends ArticleScraper {
+export class DBLPArticleScraper extends ArticleScraper {
   public uri = 'http://dblp.org/search/publ/api'
   public bar = new Bar({}, progress.Presets.shades_classic)
 
@@ -47,5 +47,3 @@ class DBLPArticleScraper extends ArticleScraper {
     ) : [] // No articles
   }
 }
-
-export { DBLPArticleScraper }
