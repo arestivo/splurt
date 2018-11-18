@@ -29,7 +29,7 @@ class SplurtCitations extends SplurtCommand {
           for (let i = 0; i < articles.length; i++)
             try {
               let cites = await google.getCiteCount(articles[i]);
-              database.updateCites(articles[i].title, cites ? cites : 0)
+              database.updateCites(articles[i].title, cites)
               bar.update(i)
             } catch(e) {
               bar.stop()
