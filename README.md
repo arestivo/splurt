@@ -70,7 +70,7 @@ splurt fetch -q 'blockchain AND cloud' -d 'dblp,scopus' -m 20 -s articles.db
 ```
 
 ```
-splurt exclude -s articles.db -e 'year<2000,year<2016 AND cites = 0'
+splurt exclude -s articles.db -e 'year < 2000, year < 2016 AND cites = 0'
 ```
 
 ```
