@@ -12,9 +12,10 @@ class GoogleCiteScraper extends CiteScraper {
     await delay(Math.random() * (this.throttle * 1000))
 
     const html = await this.get(
-      'https://scholar.google.com/scholar',
-      { q : article.title + ' ' + article.authors ? article.authors : '' },
-      { Cookie: this.cookie }
+      'https://scholar.google.com/scholar', 
+      {q : article.title}, {
+        Cookie: this.cookie
+      }
     )
 
     const $ = cheerio.load(html.data)

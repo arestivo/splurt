@@ -31,8 +31,8 @@ class SplurtCitations implements SplurtCommand {
             try {
               const cites = await google.getCiteCount(articles[i])
               database.updateCites(articles[i].title, cites)
-              bar.update(i)
-            } catch (e) {
+              bar.update(i + 1)
+            } catch(e) {
               bar.stop()
               console.log(Color.yellow('Gimme cookie!'))
               process.exit(0)
