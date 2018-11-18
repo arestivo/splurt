@@ -1,6 +1,6 @@
-abstract class SplurtCommand {
-  async abstract execute() : Promise<any>
-  abstract verifyOptions() : any
+interface SplurtCommand {
+  execute(): Promise<any>
+  verifyOptions(): any
 }
 
 export { SplurtCommand }
