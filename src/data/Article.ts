@@ -1,12 +1,12 @@
 interface Article {
-  origin: string;
+  origin: string
 
-  title: string;
-  year: number;
+  title: string
+  year: number
 
-  cites? : number
-  doi?: string;
-  authors?: string;
+  cites?: number
+  doi?: string
+  authors?: string
 }
 
 export { Article }

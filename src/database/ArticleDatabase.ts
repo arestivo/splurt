@@ -1,9 +1,7 @@
-import { Article } from "../data/Article";
-
-import Color from 'colors'
+import { Article } from '../data/Article'
 
 import sqlite3, { Database } from 'sqlite3'
-import fs from 'fs' 
+import fs from 'fs'
 
 const createCommand = `
   CREATE TABLE article (
@@ -22,51 +20,47 @@ const createCommand = `
 `
 
 class ArticleDatabase {
-  database : string | undefined = undefined
+  constructor(public database: string) { }
 
-  constructor(database : string) {
-    this.database = database
-  }
-
-  init(callback : Function) {
+  public init(callback: () => void) {
     if (this.database && !fs.existsSync(this.database)) {
-      const conn : Database = new sqlite3.Database(this.database, (err) => {
+      const conn = new sqlite3.Database(this.database, err => {
         if (err) throw new Error('Failed to create database!')
 
-        conn.run(createCommand, (err) => {
-          if (err) throw new Error('Failed to create table!')
+        conn.run(createCommand, err2 => {
+          if (err2) throw new Error('Failed to create table!')
           callback()
-        }) 
+        })
       })
     } else callback()
   }
 
-  replace(articles: Article[]): void {
+  public replace(articles: Article[]): void {
     if (this.database) {
       const conn = new sqlite3.Database(this.database, (err) => {
         if (err) throw new Error('Failed to open database!')
       })
 
-      conn.serialize(function(){
-        conn.run('UPDATE article SET included = false AND excluded = false');
+      conn.serialize(() => {
+        conn.run('UPDATE article SET included = false AND excluded = false')
 
         articles.forEach(article => {
           const stmt = conn.prepare('SELECT * FROM article WHERE title = ?')
-          stmt.each([article.title], function(err, article) {
-            conn.run('UPDATE article SET year = ?, doi = ?, authors = ?, included = true, excluded = false WHERE title = ?', 
-              article.year,
-              article.doi,
-              article.authors,
-              article.title
-            ) 
-          }, function(err, rows) {
-            if (rows == 0) {
-              conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, NULL, true, false)', 
+          stmt.each([article.title], (err, a) => {
+            conn.run('UPDATE article SET year = ?, doi = ?, authors = ?, included = true, excluded = false WHERE title = ?',
+              a.year,
+              a.doi,
+              a.authors,
+              a.title,
+            )
+          }, (err, rows) => {
+            if (rows === 0) {
+              conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, NULL, true, false)',
                 article.title,
                 article.year,
                 article.doi,
-                article.authors
-              ) 
+                article.authors,
+              )
             }
           })
         })
@@ -74,30 +68,28 @@ class ArticleDatabase {
     }
   }
 
-  fetchNeedsCite(callback : Function): Article[] {
-    let articles : Article [] = []
+  public fetchNeedsCite(callback: (as: Article[]) => void): Article[] {
+    let articles: Article[] = []
     if (this.database) {
-      const conn = new sqlite3.Database(this.database, (err) => {
+      const conn = new sqlite3.Database(this.database, err => {
         if (err) throw new Error('Failed to open database!')
       })
 
-      conn.serialize(function(){
+      conn.serialize(() => {
         const stmt = conn.prepare('SELECT * FROM article WHERE included = true AND excluded = false AND cites is NULL')
 
-        stmt.each([], function(err, article) {
+        stmt.each([], (err, article) => {
           articles = articles.concat(article)
-        }, function() {
-          callback(articles)
-        })
+        }, () => callback(articles))
       })
     }
 
     return articles
   }
 
-  updateCites(title: string, cites: number | undefined): void {
+  public updateCites(title: string, cites?: number): void {
     if (this.database) {
-      const conn = new sqlite3.Database(this.database, (err) => {
+      const conn = new sqlite3.Database(this.database, err => {
         if (err) throw new Error('Failed to open database!')
       })
 
@@ -105,13 +97,13 @@ class ArticleDatabase {
     }
   }
 
-  exclude(where: string, callback: Function): void {
+  public exclude(where: string, callback: (n: number) => void): void {
     if (this.database) {
-      const conn = new sqlite3.Database(this.database, (err) => {
+      const conn = new sqlite3.Database(this.database, err => {
         if (err) throw new Error('Failed to open database!')
       })
 
-      conn.run('UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (' + where + ')', true, function(err) {
+      conn.run('UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (' + where + ')', true, err => {
         callback(this.changes)
       })
     }

@@ -6,10 +6,6 @@ import program from 'commander'
 import Color from 'colors'
 import YAML from 'yamljs'
 
-function list(l : string) : string[] {
-  return l.split(',').map(v => v.trim());
-}
-
 program
   .version('0.0.1')
 
@@ -18,9 +14,9 @@ program
   .option('-c, --cookie <c>', 'Cookie to add to header.')
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
 
-  .parse(process.argv);
+  .parse(process.argv)
 
-const splurt = new SplurtCitations
+const splurt = new SplurtCitations()
 
 if (program.project) {
   try {
@@ -33,16 +29,14 @@ if (program.project) {
     console.error(Color.red(e.message))
     process.exit()
   }
-} 
+}
 
 splurt.delay = program.delay ? program.delay : splurt.delay
-splurt.cookie = program.cookie ? program.cookie : splurt.cookie  
-splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite 
+splurt.cookie = program.cookie ? program.cookie : splurt.cookie
+splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite
 
-try {  
-  splurt.execute().catch(function(e){
-    console.error(Color.red(e.message))
-  })
-} catch(e) {
+try {
+  splurt.execute().catch(e => console.error(Color.red(e.message)))
+} catch (e) {
   console.error(Color.red(e.message))
 }
