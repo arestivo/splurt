@@ -24,6 +24,7 @@ program
   .parse(process.argv)
 
 const splurt = new SplurtFetch
+let sqlite : string | undefined = undefined
 
 if (program.project) {
   try {
@@ -32,6 +33,7 @@ if (program.project) {
     splurt.query = options.fetch.query
     splurt.maximum = options.fetch.maximum
     splurt.databases = options.fetch.databases  
+    sqlite = options.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
@@ -41,13 +43,14 @@ if (program.project) {
 splurt.query = program.query ? program.query : splurt.query
 splurt.databases = program.databases ? program.databases : splurt.databases  
 splurt.maximum = program.max ? program.max : splurt.maximum
+sqlite = program.sqlite ? program.sqlite : sqlite
 
 splurt.execute()
   .then(function(articles) {
     console.log(Color.green(`Fetched ${articles.length} articles.`))
 
-    if (program.sqlite) {
-      const database = new ArticleDatabase(program.sqlite)
+    if (sqlite) {
+      const database = new ArticleDatabase(sqlite)
       // TODO: There has to be a better way to do this
       setTimeout(function() {
         database.replace(articles) 

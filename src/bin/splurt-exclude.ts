@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { SplurtComplete } from '../command/SplurtComplete'
+import { SplurtExclude } from '../command/SplurtExclude'
 
 import program from 'commander'
 import Color from 'colors'
@@ -14,32 +14,30 @@ program
   .version('0.0.1')
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
-  .option('-d, --delay <s>', 'Delay between requests.', 2)
-  .option('-c, --cookie <c>', 'Cookie to add to header.')
+  .option('-e, --exclude <criteria>', 'Comma separated exclusion criteria using SQL.', list)
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
 
   .parse(process.argv);
 
-const splurt = new SplurtComplete
+const splurt = new SplurtExclude
 
 if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.delay = options.complete.delay
-    splurt.cookie = options.complete.cookie
+    splurt.criteria = options.exclude.criteria
+    splurt.sqlite = options.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
   }
 } 
 
-splurt.delay = program.delay ? program.delay : splurt.delay
-splurt.cookie = program.cookie ? program.cookie : splurt.cookie  
+splurt.criteria = program.exclude ? program.exclude : splurt.criteria  
 splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite 
 
 try {  
-  splurt.execute().catch(function(e){
+  splurt.execute().catch(function(e : any){
     console.error(Color.red(e.message))
   })
 } catch(e) {

@@ -10,7 +10,8 @@
   "bin": {
     "splurt": "./src/bin/splurt.js",
     "splurt-fetch": "./src/bin/splurt-fetch.js",
-    "splurt-complete": "./src/bin/splurt-complete.js"
+    "splurt-citations": "./src/bin/splurt-citations.js",
+    "splurt-exclude": "./src/bin/splurt-exclude.js"
   },
   "scripts": {
     "build": "tsc",

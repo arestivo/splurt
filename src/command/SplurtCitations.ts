@@ -4,7 +4,7 @@ import { GoogleCiteScraper } from "../scraper/GoogleCiteScraper";
 import Color from 'colors'
 import { ArticleDatabase } from "../database/ArticleDatabase";
 
-class SplurtComplete extends SplurtCommand {
+class SplurtCitations extends SplurtCommand {
   delay: number = 2
   cookie: string | undefined = undefined
   sqlite: string | undefined = undefined
@@ -21,7 +21,7 @@ class SplurtComplete extends SplurtCommand {
         for (let i = 0; i < articles.length; i++)
         try {
           let cites = await google.getCiteCount(articles[i]);
-          console.log(articles[i].title + ': ' + cites)
+          console.log(articles[i].title + ': ' + (cites == undefined ? Color.red(''+cites) : (cites == 0 ? Color.yellow(''+cites) : Color.green(''+cites))))
           database.updateCites(articles[i].title, cites)
         } catch(e) {
           console.log(Color.yellow('Gimme cookie!'))
@@ -37,5 +37,5 @@ class SplurtComplete extends SplurtCommand {
   }
 }
 
-export { SplurtComplete }
+export { SplurtCitations }
 
