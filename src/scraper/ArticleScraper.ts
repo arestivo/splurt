@@ -1,10 +1,9 @@
-import { Article } from "../data/Article"
-import { Scraper } from "./Scraper";
-import axios, { AxiosRequestConfig } from 'axios'
+import { Scraper } from './Scraper'
+import axios from 'axios'
 
-abstract class ArticleScraper extends Scraper{
-  get(url : string, params : any) {
-    return axios.get('http://dblp.org/search/publ/api', {params: params})
+abstract class ArticleScraper extends Scraper {
+  public get(url: string, params: any) {
+    return axios.get('http://dblp.org/search/publ/api', {params})
   }
 }
 
