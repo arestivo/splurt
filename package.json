@@ -43,6 +43,7 @@
     "commander": "^2.19.0",
     "delay": "^4.1.0",
     "es6-promise-pool": "^2.5.0",
+    "logic-query-parser": "0.0.5",
     "npm": "^6.4.1",
     "sqlite3": "^4.0.4",
     "yamljs": "^0.3.0"
