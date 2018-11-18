@@ -1,9 +1,7 @@
-#!/usr/bin/env node
-
 import { SplurtExclude } from '../command/SplurtExclude'
 
-import program from 'commander'
 import Color from 'colors'
+import program from 'commander'
 import YAML from 'yamljs'
 
 function list(l: string): string[] {

@@ -14,6 +14,9 @@
         "comment-format": [
             false
         ],
+        "no-console": [
+            false
+        ],
         "semicolon": [
             true,
             "never"
@@ -22,11 +25,8 @@
             true,
             "ban-single-arg-parens"
         ],
-        "no-unused-expression": false,
-        "curly": [
-            true,
-            "as-needed"
-        ]
+        "curly": false,
+        "no-unused-expression": false
     },
     "rulesDirectory": []
 }
