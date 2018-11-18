@@ -16,17 +16,19 @@ class SplurtCitations extends SplurtCommand {
 
     if (this.sqlite != undefined) {
       const database = new ArticleDatabase(this.sqlite)
-      database.fetchNeedsCite(async function(articles : Article[]) {
-        console.log(Color.green(`Citations needed for ${articles.length} articles!`))
-        for (let i = 0; i < articles.length; i++)
-        try {
-          let cites = await google.getCiteCount(articles[i]);
-          console.log(articles[i].title + ': ' + (cites == undefined ? Color.red(''+cites) : (cites == 0 ? Color.yellow(''+cites) : Color.green(''+cites))))
-          database.updateCites(articles[i].title, cites)
-        } catch(e) {
-          console.log(Color.yellow('Gimme cookie!'))
-          process.exit(0)
-        }
+      database.init(() => {
+        database.fetchNeedsCite(async function(articles : Article[]) {
+          console.log(Color.green(`Citations needed for ${articles.length} articles!`))
+          for (let i = 0; i < articles.length; i++)
+          try {
+            let cites = await google.getCiteCount(articles[i]);
+            console.log(articles[i].title + ': ' + (cites == undefined ? Color.red(''+cites) : (cites == 0 ? Color.yellow(''+cites) : Color.green(''+cites))))
+            database.updateCites(articles[i].title, cites)
+          } catch(e) {
+            console.log(Color.yellow('Gimme cookie!'))
+            process.exit(0)
+          }
+        })  
       })
     }
   }

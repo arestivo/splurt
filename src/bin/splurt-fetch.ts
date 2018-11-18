@@ -17,7 +17,7 @@ program
   .option('-p, --project <file>', 'Read config from project YAML file.')
   .option('-q, --query <q>', 'Search query')
   .option('-d, --databases <list>', 'Comma separated list of databases to search.', list)
-  .option('-m, --max [n]', 'Maximum number of results.', 10)
+  .option('-m, --max [n]', 'Maximum number of results.')
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
   .option('--verbose <database>', 'Verbose output.')
   
@@ -51,10 +51,9 @@ splurt.execute()
 
     if (sqlite) {
       const database = new ArticleDatabase(sqlite)
-      // TODO: There has to be a better way to do this
-      setTimeout(function() {
+      database.init(() => {
         database.replace(articles) 
-      }, 1000)
+      })
     } else console.log(articles)
   })
   .catch(function(e) {

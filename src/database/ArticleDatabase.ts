@@ -26,20 +26,19 @@ class ArticleDatabase {
 
   constructor(database : string) {
     this.database = database
+  }
 
-    sqlite3.verbose()
-
-    if (!fs.existsSync(database)) {
-      const conn : Database = new sqlite3.Database(database, (err) => {
+  init(callback : Function) {
+    if (this.database && !fs.existsSync(this.database)) {
+      const conn : Database = new sqlite3.Database(this.database, (err) => {
         if (err) throw new Error('Failed to create database!')
 
         conn.run(createCommand, (err) => {
           if (err) throw new Error('Failed to create table!')
+          callback()
         }) 
-
-        conn.close()
       })
-    }        
+    }
   }
 
   replace(articles: Article[]): void {
