@@ -26,8 +26,8 @@ if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.delay = options.delay
-    splurt.cookie = options.cookie
+    splurt.delay = options.complete.delay
+    splurt.cookie = options.complete.cookie
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()

@@ -29,9 +29,9 @@ if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.query = options.query
-    splurt.maximum = options.maximum
-    splurt.databases = options.databases  
+    splurt.query = options.fetch.query
+    splurt.maximum = options.fetch.maximum
+    splurt.databases = options.fetch.databases  
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()

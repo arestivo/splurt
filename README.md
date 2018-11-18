@@ -62,19 +62,17 @@ splurt complete -s articles.db -c 'COOKIE=value'
 
 ## Project
 
-Project ```project.yaml``` file example for *fetch*: 
+Project ```project.yaml``` file example: 
 
 ```
-query: 'blockchain AND cloud'
-databases: [dblp,scopus]
-maximum: 20
-```
+fetch:
+  query: 'blockchain AND cloud'
+  databases: [dblp,scopus]
+  maximum: 20
 
-Project ```project.yaml``` file example for *complete*: 
-
-```
-delay: 2
-cookie: 'COOKIE=value'
+complete:
+  delay: 2
+  cookie: 'COOKIE=value'
 ```
 
 Using projects:
