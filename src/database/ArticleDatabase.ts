@@ -1,6 +1,4 @@
-import { Article } from '../data/Article';
-
-import Color from 'colors'
+import { Article } from '../data/Article'
 
 import sqlite3, { Database } from 'sqlite3'
 import fs from 'fs'
@@ -22,11 +20,7 @@ const createCommand = `
 `
 
 class ArticleDatabase {
-  public database?: string
-
-  constructor(database: string) {
-    this.database = database
-  }
+  constructor(public database: string) { }
 
   public init(callback: () => void) {
     if (this.database && !fs.existsSync(this.database)) {

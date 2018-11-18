@@ -6,10 +6,6 @@ import program from 'commander'
 import Color from 'colors'
 import YAML from 'yamljs'
 
-function list(l: string): string[] {
-  return l.split(',').map(v => v.trim())
-}
-
 program
   .version('0.0.1')
 
