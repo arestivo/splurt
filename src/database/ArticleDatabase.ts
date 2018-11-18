@@ -103,7 +103,7 @@ class ArticleDatabase {
         if (err) throw new Error('Failed to open database!')
       })
 
-      conn.run('UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (' + where + ')', true, err => {
+      conn.run('UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (' + where + ')', true, function(err) {
         callback(this.changes)
       })
     }

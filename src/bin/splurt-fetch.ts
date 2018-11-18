@@ -24,7 +24,7 @@ program
   .parse(process.argv)
 
 const splurt = new SplurtFetch()
-let sqlite: string
+let sqlite: string | undefined = undefined
 
 if (program.project) {
   try {

@@ -28,7 +28,7 @@ class GoogleCiteScraper extends CiteScraper {
       if (text.startsWith('Cited by')) {
         const matches = text.match(/\d+/)
         const match = matches == null ? undefined : matches[0]
-        if (match !== null) n = parseInt(match)
+        if (match !== undefined) n = parseInt(match)
       }
     })
 
