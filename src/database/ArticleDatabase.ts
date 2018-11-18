@@ -38,7 +38,7 @@ class ArticleDatabase {
           callback()
         }) 
       })
-    }
+    } else callback()
   }
 
   replace(articles: Article[]): void {

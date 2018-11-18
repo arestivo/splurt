@@ -47,8 +47,6 @@ sqlite = program.sqlite ? program.sqlite : sqlite
 
 splurt.execute()
   .then(function(articles) {
-    console.log(Color.green(`Fetched ${articles.length} articles.`))
-
     if (sqlite) {
       const database = new ArticleDatabase(sqlite)
       database.init(() => {
