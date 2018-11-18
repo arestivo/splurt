@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { SplurtExclude } from '../command/SplurtExclude'
 
 import Color from 'colors'

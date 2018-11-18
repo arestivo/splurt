@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { SplurtCitations } from '../command/SplurtCitations'
 
 import Color from 'colors'
