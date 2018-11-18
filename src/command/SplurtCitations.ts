@@ -32,7 +32,7 @@ class SplurtCitations extends SplurtCommand {
             try {
               let cites = await google.getCiteCount(articles[i]);
               database.updateCites(articles[i].title, cites)
-              bar.update(i)
+              bar.update(i + 1)
             } catch(e) {
               bar.stop()
               console.log(Color.yellow('Gimme cookie!'))
