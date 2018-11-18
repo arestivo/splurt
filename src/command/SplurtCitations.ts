@@ -19,12 +19,14 @@ class SplurtCitations extends SplurtCommand {
       const database = new ArticleDatabase(this.sqlite)
       database.init(() => {
         database.fetchNeedsCite(async function(articles : Article[]) {
-          const bar : Bar = new Bar({}, progress.Presets.shades_classic);
-
+          if (articles.length == 0) {
+            console.log(Color.green('All articles have citations!'))
+            return []
+          }
+          
+          const bar = new Bar({}, progress.Presets.shades_classic);
           bar.start(articles.length, 0)
 
-          if (articles.length == 0)
-            console.log(Color.green('All articles have citations!'))
 
           for (let i = 0; i < articles.length; i++)
             try {

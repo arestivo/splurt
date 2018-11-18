@@ -4,9 +4,9 @@ import {ArticleScraper} from './ArticleScraper'
 import progress, { Bar } from 'cli-progress';
 
 class DBLPArticleScraper extends ArticleScraper {
-  uri : string = 'http://dblp.org/search/publ/api'
+  uri = 'http://dblp.org/search/publ/api'
 
-  bar : Bar = new Bar({}, progress.Presets.shades_classic);
+  bar = new Bar({}, progress.Presets.shades_classic);
 
   async query(q : string, maximum : number = 10): Promise<Article[]> {
     let current : number = 0
