@@ -15,12 +15,12 @@ class DBLPArticleScraper extends ArticleScraper {
     this.bar.start(maximum, 0)
 
     while (!maximum || current < maximum) {
-      const newArticles : Article[] = await this.queryPage(q, current)
+      const newArticles : Article[] = await this.queryPage(q, current, maximum)
       if (newArticles.length == 0) break
       articles = articles.concat(newArticles)
       current += newArticles.length
 
-      this.bar.update(articles.length)
+      this.bar.update(Math.min(articles.length, maximum))
     }
 
     this.bar.stop()
@@ -28,11 +28,11 @@ class DBLPArticleScraper extends ArticleScraper {
     return articles.slice(0, maximum)
   }
 
-  async queryPage(q : string, f : number) : Promise<Article[]> {
+  async queryPage(q : string, f : number, maximum : number) : Promise<Article[]> {
     const json = await this.get(this.uri, {q, f, format : 'json'})
     const elements : any[] = json.data.result.hits.hit
 
-    this.bar.setTotal(json.data.result.hits['@total'])
+    this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
 
     return elements ? elements.map(e => e.info).map(
       (i : any) => ({
