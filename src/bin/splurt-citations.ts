@@ -2,8 +2,8 @@
 
 import { SplurtCitations } from '../command/SplurtCitations'
 
-import program from 'commander'
 import Color from 'colors'
+import program from 'commander'
 import YAML from 'yamljs'
 
 program

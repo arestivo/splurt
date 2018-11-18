@@ -1,4 +1,4 @@
-interface Article {
+export interface Article {
   origin: string
 
   title: string
@@ -8,5 +8,3 @@ interface Article {
   doi?: string
   authors?: string
 }
-
-export { Article }

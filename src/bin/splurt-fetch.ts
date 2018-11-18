@@ -3,8 +3,8 @@
 import { SplurtFetch } from '../command/SplurtFetch'
 import { ArticleDatabase } from '../database/ArticleDatabase'
 
-import program from 'commander'
 import Color from 'colors'
+import program from 'commander'
 import YAML from 'yamljs'
 
 function list(l: string): string[] {
@@ -24,7 +24,7 @@ program
   .parse(process.argv)
 
 const splurt = new SplurtFetch()
-let sqlite: string | undefined = undefined
+let sqlite: string | undefined
 
 if (program.project) {
   try {

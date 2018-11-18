@@ -1,7 +1,7 @@
 import { Article } from '../data/Article'
 
-import sqlite3, { Database } from 'sqlite3'
 import fs from 'fs'
+import sqlite3 from 'sqlite3'
 
 const createCommand = `
   CREATE TABLE article (
@@ -19,7 +19,7 @@ const createCommand = `
   )
 `
 
-class ArticleDatabase {
+export class ArticleDatabase {
   constructor(public database: string) { }
 
   public init(callback: () => void) {
@@ -37,7 +37,7 @@ class ArticleDatabase {
 
   public replace(articles: Article[]): void {
     if (this.database) {
-      const conn = new sqlite3.Database(this.database, (err) => {
+      const conn = new sqlite3.Database(this.database, err => {
         if (err) throw new Error('Failed to open database!')
       })
 
@@ -103,12 +103,9 @@ class ArticleDatabase {
         if (err) throw new Error('Failed to open database!')
       })
 
-      conn.run('UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (' + where + ')', true, function(err) {
+      conn.run(`UPDATE article SET excluded = ? WHERE included = true AND excluded = false AND (${where})`, true, function (err) {
         callback(this.changes)
       })
     }
   }
-
 }
-
-export { ArticleDatabase }

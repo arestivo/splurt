@@ -1,8 +1,6 @@
-import { Scraper } from './Scraper'
 import { Article } from '../data/Article'
+import { Scraper } from './Scraper'
 
-abstract class CiteScraper extends Scraper {
+export abstract class CiteScraper extends Scraper {
   public abstract async getCiteCount(article: Article): Promise<number | undefined>
 }
-
-export { CiteScraper }
