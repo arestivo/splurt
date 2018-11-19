@@ -11,6 +11,7 @@ const createCommand = `
     year INTEGER NOT NULL,
 
     doi VARCHAR,
+    publication VARCHAR,
     authors VARCHAR,
     cites INTEGER,
 
@@ -47,18 +48,20 @@ export class ArticleDatabase {
         articles.forEach(article => {
           const stmt = conn.prepare('SELECT * FROM article WHERE title = ?')
           stmt.each([article.title], (err, a) => {
-            conn.run('UPDATE article SET year = ?, doi = ?, authors = ?, included = true, excluded = false WHERE title = ?',
+            conn.run('UPDATE article SET year = ?, doi = ?, publication = ?, authors = ?, included = true, excluded = false WHERE title = ?',
               a.year,
               a.doi,
+              a.publication,
               a.authors,
               a.title,
             )
           }, (err, rows) => {
             if (rows === 0) {
-              conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, NULL, true, false)',
+              conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, NULL, true, false)',
                 article.title,
                 article.year,
                 article.doi,
+                article.publication,
                 article.authors,
               )
             }

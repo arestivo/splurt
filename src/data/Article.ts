@@ -4,7 +4,8 @@ export interface Article {
   title: string
   year: number
 
-  cites?: number
   doi?: string
+  publication?: string
   authors?: string
+  cites?: number
 }

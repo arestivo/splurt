@@ -37,6 +37,8 @@ export class DBLPArticleScraper extends ArticleScraper {
   }
 
   private isValidTitle(title : string, tree : any) : boolean {
+    if (!title) return false
+
     if (tree.lexeme.value)
       return title.toLowerCase().includes(tree.lexeme.value.toLowerCase().replace(/\'/g, ''))
 
@@ -59,9 +61,10 @@ export class DBLPArticleScraper extends ArticleScraper {
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({
         origin: 'dblp',
-        title: i.title,
+        title: decodeURI(i.title),
         year: i.year,
         doi: i.doi,
+        publication: decodeURI(i.venue),
         authors: i.authors ? (
             Array.isArray(i.authors.author) ?
             i.authors.author.join(', ') :
