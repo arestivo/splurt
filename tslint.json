@@ -1,7 +1,7 @@
 {
-    "defaultSeverity": "error",
+    "defaultSeverity": "warning",
     "extends": [
-        "tslint:recommended"
+        "tslint-config-airbnb"
     ],
     "jsRules": {},
     "rules": {
@@ -14,6 +14,9 @@
         "comment-format": [
             false
         ],
+        "no-console": [
+            false
+        ],
         "semicolon": [
             true,
             "never"
@@ -22,11 +25,24 @@
             true,
             "ban-single-arg-parens"
         ],
+        "curly": false,
         "no-unused-expression": false,
-        "curly": [
-            true,
-            "as-needed"
-        ]
+        "interface-name": false,
+        "max-line-length": false,
+        "object-literal-sort-keys": false,
+        "trailing-comma": false,
+        "import-name": false,
+        "ter-arrow-parens": false,
+        "align": false,
+        "deprecation": true,
+        "no-invalid-template-strings": true,
+        "no-return-await": true,
+        "no-unnecessary-callback-wrapper": true,
+        "arrow-return-shorthand": true,
+        "prefer-for-of": true,
+        "prefer-function-over-method": true,
+        "unified-signatures": true,
+        "radix": false
     },
     "rulesDirectory": []
 }

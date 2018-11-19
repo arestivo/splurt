@@ -1,10 +1,7 @@
 import { Scraper } from './Scraper'
-import axios from 'axios'
 
-abstract class ArticleScraper extends Scraper {
-  public get(url: string, params: any) {
-    return axios.get('http://dblp.org/search/publ/api', {params})
+export abstract class ArticleScraper extends Scraper {
+  public get(url = 'http://dblp.org/search/publ/api', params: any) {
+    return super.get(url, params)
   }
 }
-
-export { ArticleScraper }

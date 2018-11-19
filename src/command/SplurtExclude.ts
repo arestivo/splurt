@@ -1,9 +1,9 @@
-import { SplurtCommand } from './SplurtCommand';
-import { ArticleDatabase } from '../database/ArticleDatabase';
+import { ArticleDatabase } from '../database/ArticleDatabase'
+import { SplurtCommand } from './SplurtCommand'
 
 import Color from 'colors'
 
-class SplurtExclude implements SplurtCommand {
+export class SplurtExclude implements SplurtCommand<void> {
   public criteria?: string[]
   public sqlite?: string
 
@@ -14,9 +14,9 @@ class SplurtExclude implements SplurtCommand {
       const database = new ArticleDatabase(this.sqlite)
       database.init(() => {
         if (this.criteria !== undefined) {
-          this.criteria.forEach((where: string) => {
-            database.exclude(where, (n: number) => {
-              console.log(where + ': ' + Color.green(`${n === undefined ? 0 : n} articles excluded!`))
+          this.criteria.forEach(where => {
+            database.exclude(where, n => {
+              console.log(`where: ${Color.green(`${n === undefined ? 0 : n} articles excluded!`)}`)
             })
           })
         } else console.log(Color.red('No criteria selected!'))
@@ -29,5 +29,3 @@ class SplurtExclude implements SplurtCommand {
       throw new Error('No sqlite database chosen!')
   }
 }
-
-export { SplurtExclude }

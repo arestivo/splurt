@@ -1,23 +1,23 @@
+import { Article } from '../data/Article'
 import { DBLPArticleScraper } from '../scraper/DBLPArticleScraper'
-import { Article } from '../data/Article';
+import { SplurtCommand } from './SplurtCommand'
+
 import Color from 'colors'
 
 const dblp = new DBLPArticleScraper()
 
-class SplurtFetch {
-  public query: string = ''
-  public maximum: number = 10
-  public databases: string[] = []
+export class SplurtFetch implements SplurtCommand<Article[]> {
+  constructor(public query = '', public maximum = 10, public databases: string[] = []) { }
 
   public async execute() {
     this.verifyOptions()
 
-    const promises: Array<Promise<Article[]>> = this.databases.map(database => {
+    const promises: Promise<Article[]>[] = this.databases.map(database => {
       switch (database) {
         case 'dblp':
           return dblp.query(this.query, this.maximum)
         default:
-          console.warn(Color.yellow('WARNING: Unknown research database: ' + database))
+          console.warn(Color.yellow(`WARNING: Unknown research database: ${database}`))
           return Promise.resolve([])
       }
     })
@@ -36,5 +36,3 @@ class SplurtFetch {
       throw new Error('No query given!')
   }
 }
-
-export { SplurtFetch }

@@ -1,11 +1,12 @@
-import { SplurtCommand } from './SplurtCommand'
 import { Article } from '../data/Article'
-import { GoogleCiteScraper } from '../scraper/GoogleCiteScraper'
-import Color from 'colors'
 import { ArticleDatabase } from '../database/ArticleDatabase'
-import progress, { Bar } from 'cli-progress'
+import { GoogleCiteScraper } from '../scraper/GoogleCiteScraper'
+import { SplurtCommand } from './SplurtCommand'
 
-class SplurtCitations implements SplurtCommand {
+import progress, { Bar } from 'cli-progress'
+import Color from 'colors'
+
+export class SplurtCitations implements SplurtCommand<void> {
   public delay: number = 2
   public cookie?: string
   public sqlite?: string
@@ -27,12 +28,12 @@ class SplurtCitations implements SplurtCommand {
           const bar = new Bar({}, progress.Presets.shades_classic)
           bar.start(articles.length, 0)
 
-          for (let i = 0; i < articles.length; i++)
+          for (let i = 0; i < articles.length; i += 1)
             try {
               const cites = await google.getCiteCount(articles[i])
               database.updateCites(articles[i].title, cites)
               bar.update(i + 1)
-            } catch(e) {
+            } catch (e) {
               bar.stop()
               console.log(Color.yellow('Gimme cookie!'))
               process.exit(0)
@@ -48,5 +49,3 @@ class SplurtCitations implements SplurtCommand {
       throw new Error('No sqlite database chosen!')
   }
 }
-
-export { SplurtCitations }
