@@ -1,6 +1,5 @@
 import { Article } from '../data/Article'
 
-import fs from 'fs'
 import sqlite from 'sqlite'
 
 const createCommand = `
@@ -52,7 +51,7 @@ export class ArticleDatabase {
     if (this.database) {
       const conn = await sqlite.open(this.database)
       const stmt = await conn.prepare('SELECT * FROM article WHERE included = true AND excluded = false AND cites is NULL')
-      stmt.each((_, article) => articles = articles.concat(article))
+      await stmt.each((_, article) => articles = articles.concat(article))
     }
 
     return articles
@@ -61,7 +60,7 @@ export class ArticleDatabase {
   public async updateCites(title: string, cites?: number) {
     if (this.database) {
       const conn = await sqlite.open(this.database)
-      conn.run('UPDATE article SET cites = ? WHERE title = ?', cites, title)
+      await conn.run('UPDATE article SET cites = ? WHERE title = ?', cites, title)
     }
   }
 
