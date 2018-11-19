@@ -1,5 +1,5 @@
 {
-    "defaultSeverity": "error",
+    "defaultSeverity": "warning",
     "extends": [
         "tslint-config-airbnb"
     ],
@@ -33,7 +33,16 @@
         "trailing-comma": false,
         "import-name": false,
         "ter-arrow-parens": false,
-        "align": false
+        "align": false,
+        "deprecation": true,
+        "no-invalid-template-strings": true,
+        "no-return-await": true,
+        "no-unnecessary-callback-wrapper": true,
+        "arrow-return-shorthand": true,
+        "prefer-for-of": true,
+        "prefer-function-over-method": true,
+        "unified-signatures": true,
+        "radix": false
     },
     "rulesDirectory": []
 }

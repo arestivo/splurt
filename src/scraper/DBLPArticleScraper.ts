@@ -8,7 +8,7 @@ export class DBLPArticleScraper extends ArticleScraper {
   public bar = new Bar({}, progress.Presets.shades_classic)
 
   public async query(q: string, maximum: number = 10): Promise<Article[]> {
-    let current: number = 0
+    let current = 0
     let articles: Article[] = []
 
     this.bar.start(maximum, 0)

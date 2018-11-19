@@ -1,4 +1,4 @@
-export interface SplurtCommand {
-  execute(): Promise<any>
+export interface SplurtCommand<T> {
+  execute(): Promise<T>
   verifyOptions(): any
 }

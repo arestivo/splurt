@@ -1,11 +1,12 @@
 import { Article } from '../data/Article'
 import { DBLPArticleScraper } from '../scraper/DBLPArticleScraper'
+import { SplurtCommand } from './SplurtCommand'
 
 import Color from 'colors'
 
 const dblp = new DBLPArticleScraper()
 
-export class SplurtFetch {
+export class SplurtFetch implements SplurtCommand<Article[]> {
   public query: string = ''
   public maximum: number = 10
   public databases: string[] = []
