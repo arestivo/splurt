@@ -11,13 +11,17 @@ sudo npm install -g --unsafe-perm splurt
 or locally:
 
 ```
-sudo npm install splurt
+sudo link
 ```
 
-but then, executable will be in
+which will make the binaries available through a series of links, such as:
 
 ```
-<INSTALL_DIR>/node_modules/.bin/splurt
+/usr/local/bin/splurt -> /usr/local/lib/node_modules/splurt/build/src/bin/splurt.js
+/usr/local/bin/splurt-fetch -> /usr/local/lib/node_modules/splurt/build/src/bin/splurt-fetch.js
+/usr/local/bin/splurt-exclude -> /usr/local/lib/node_modules/splurt/build/src/bin/splurt-exclude.js
+/usr/local/bin/splurt-citations -> /usr/local/lib/node_modules/splurt/build/src/bin/splurt-citations.js
+/usr/local/lib/node_modules/splurt -> <DEV_DIR>
 ```
 
 ## Fetch
@@ -79,7 +83,7 @@ splurt citations -s articles.db -c 'COOKIE=value'
 
 ## Project
 
-Project ```project.yaml``` file example: 
+Project ```project.yaml``` file example:
 
 ```
 sqlite: articles.db
@@ -90,7 +94,7 @@ fetch:
   maximum: 20
 
 exclude:
-  criteria: ['cites = 0 OR cites IS NULL','year < 2000'] 
+  criteria: ['cites = 0 OR cites IS NULL','year < 2000']
 
 citations:
   delay: 2

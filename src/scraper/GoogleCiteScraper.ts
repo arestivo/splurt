@@ -20,17 +20,14 @@ export class GoogleCiteScraper extends CiteScraper {
     const $ = cheerio.load(html.data)
     const links = $('div.gs_r:first-child .gs_ri .gs_fl a')
 
-    let n: number = 0
-
-    links.each((i, element) => {
+    links.each((_, element) => {
       const text = $(element).text()
       if (text.startsWith('Cited by')) {
         const matches = text.match(/\d+/)
-        const match = matches == null ? undefined : matches[0]
-        if (match !== undefined) n = parseInt(match, undefined)
+        if (matches !== null) return parseInt(matches[0])
       }
     })
 
-    return n
+    return 0
   }
 }

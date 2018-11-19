@@ -7,9 +7,7 @@ import Color from 'colors'
 import program from 'commander'
 import YAML from 'yamljs'
 
-function list(l: string): string[] {
-  return l.split(',').map(v => v.trim())
-}
+const list = (l: string) => l.split(',').map(v => v.trim())
 
 program
   .version('0.0.1')
@@ -24,26 +22,22 @@ program
   .parse(process.argv)
 
 const splurt = new SplurtFetch()
-let sqlite: string | undefined
+let sqlite: string
 
 if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.query = options.fetch.query
-    splurt.maximum = options.fetch.maximum
-    splurt.databases = options.fetch.databases
-    sqlite = options.sqlite
+    splurt.query = options.fetch.query || splurt.query
+    splurt.maximum = options.fetch.maximum || splurt.maximum
+    splurt.databases = options.fetch.databases || splurt.databases
+
+    sqlite = options.sqlite || program.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
   }
 }
-
-splurt.query = program.query ? program.query : splurt.query
-splurt.databases = program.databases ? program.databases : splurt.databases
-splurt.maximum = program.max ? program.max : splurt.maximum
-sqlite = program.sqlite ? program.sqlite : sqlite
 
 splurt.execute()
   .then(articles => {

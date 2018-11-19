@@ -6,7 +6,7 @@ import { SplurtCommand } from './SplurtCommand'
 import progress, { Bar } from 'cli-progress'
 import Color from 'colors'
 
-export class SplurtCitations implements SplurtCommand {
+export class SplurtCitations implements SplurtCommand<void> {
   public delay: number = 2
   public cookie?: string
   public sqlite?: string
