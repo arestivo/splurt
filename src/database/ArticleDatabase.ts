@@ -4,7 +4,7 @@ import fs from 'fs'
 import sqlite from 'sqlite'
 
 const createCommand = `
-  CREATE TABLE article (
+  CREATE TABLE IF NOT EXISTS article (
     id INTEGER PRIMARY KEY,
 
     title VARCHAR NOT NULL,
@@ -23,12 +23,9 @@ const createCommand = `
 export class ArticleDatabase {
   private constructor(public database: string) { }
 
-  public static async connect(database: string) {
-    if (database && !fs.existsSync(database)) {
-      const conn = await sqlite.open(database)
-      conn.run(createCommand)
-    }
-
+  public static async connect(database: string = ':memory:') {
+    const conn = await sqlite.open(database)
+    await conn.run(createCommand)
     return new ArticleDatabase(database)
   }
 
@@ -51,6 +48,7 @@ export class ArticleDatabase {
 
   public async fetchNeedsCite() {
     let articles: Article[] = []
+
     if (this.database) {
       const conn = await sqlite.open(this.database)
       const stmt = await conn.prepare('SELECT * FROM article WHERE included = true AND excluded = false AND cites is NULL')
