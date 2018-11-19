@@ -7,9 +7,7 @@ import progress, { Bar } from 'cli-progress'
 import Color from 'colors'
 
 export class SplurtCitations implements SplurtCommand<void> {
-  public delay: number = 2
-  public cookie?: string
-  public sqlite?: string
+  constructor(public delay = 2, public cookie?: string, public sqlite?: string) { }
 
   public async execute() {
     this.verifyOptions()
@@ -17,30 +15,27 @@ export class SplurtCitations implements SplurtCommand<void> {
     const google = new GoogleCiteScraper(this.delay, this.cookie)
 
     if (this.sqlite !== undefined) {
-      const database = new ArticleDatabase(this.sqlite)
-      database.init(() => {
-        database.fetchNeedsCite(async (articles: Article[]) => {
-          if (articles.length === 0) {
-            console.log(Color.green('All articles have citations!'))
-            return []
-          }
+      const database = await ArticleDatabase.connect(this.sqlite)
+      const articles = await database.fetchNeedsCite()
 
-          const bar = new Bar({}, progress.Presets.shades_classic)
-          bar.start(articles.length, 0)
+      if (articles.length === 0) {
+        console.log(Color.green('All articles have citations!'))
+      }
 
-          for (let i = 0; i < articles.length; i += 1)
-            try {
-              const cites = await google.getCiteCount(articles[i])
-              database.updateCites(articles[i].title, cites)
-              bar.update(i + 1)
-            } catch (e) {
-              bar.stop()
-              console.log(Color.yellow('Gimme cookie!'))
-              process.exit(0)
-            }
+      const bar = new Bar({}, progress.Presets.shades_classic)
+      bar.start(articles.length, 0)
+
+      for (let i = 0; i < articles.length; i += 1)
+        try {
+          const cites = await google.getCiteCount(articles[i])
+          await database.updateCites(articles[i].title, cites)
+          bar.update(i + 1)
+        } catch (e) {
           bar.stop()
-        })
-      })
+          console.log(Color.yellow('Gimme cookie!'))
+          process.exit(0)
+        }
+      bar.stop()
     }
   }
 

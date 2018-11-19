@@ -17,22 +17,19 @@ program
 
   .parse(process.argv)
 
-const splurt = new SplurtExclude()
+const splurt = new SplurtExclude(program.exclude, program.sqlite)
 
 if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.criteria = options.exclude.criteria
-    splurt.sqlite = options.sqlite
+    splurt.criteria = options.exclude.criteria || splurt.criteria
+    splurt.sqlite = options.sqlite || splurt.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
   }
 }
-
-splurt.criteria = program.exclude || splurt.criteria
-splurt.sqlite = program.sqlite || splurt.sqlite
 
 try {
   splurt.execute().catch(e => console.error(Color.red(e.message)))

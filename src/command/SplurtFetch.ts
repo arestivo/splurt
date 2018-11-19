@@ -12,7 +12,7 @@ export class SplurtFetch implements SplurtCommand<Article[]> {
   public async execute() {
     this.verifyOptions()
 
-    const promises: Promise<Article[]>[] = this.databases.map(database => {
+    const promises = this.databases.map(database => {
       switch (database) {
         case 'dblp':
           return dblp.query(this.query, this.maximum)
@@ -22,10 +22,7 @@ export class SplurtFetch implements SplurtCommand<Article[]> {
       }
     })
 
-    const articles: Article[] = (await Promise.all(promises))
-      .reduce((acc, val) => acc.concat(val), [])
-
-    return articles
+    return (await Promise.all(promises)).reduce((acc, val) => acc.concat(val), [])
   }
 
   public verifyOptions() {

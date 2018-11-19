@@ -7,43 +7,47 @@ import Color from 'colors'
 import program from 'commander'
 import YAML from 'yamljs'
 
-const list = (l: string) => l.split(',').map(v => v.trim())
+(async () => {
+  const list = (l: string) => l.split(',').map(v => v.trim())
 
-program
-  .version('0.0.1')
+  program
+    .version('0.0.1')
 
-  .option('-p, --project <file>', 'Read config from project YAML file.')
-  .option('-q, --query <q>', 'Search query')
-  .option('-d, --databases <list>', 'Comma separated list of databases to search.', list)
-  .option('-m, --max [n]', 'Maximum number of results.')
-  .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
-  .option('--verbose <database>', 'Verbose output.')
+    .option('-p, --project <file>', 'Read config from project YAML file.')
+    .option('-q, --query <q>', 'Search query', '')
+    .option('-d, --databases <list>', 'Comma separated list of databases to search.', list, [])
+    .option('-m, --max [n]', 'Maximum number of results.', 10)
+    .option('-s, --sqlite <database>', 'SQLite database used to store articles.', undefined)
+    .option('--verbose <database>', 'Verbose output.')
 
-  .parse(process.argv)
+    .parse(process.argv)
 
-const splurt = new SplurtFetch()
-let sqlite: string
+  const splurt = new SplurtFetch(program.query, program.maximum, program.databases)
+  let sqlite: string = program.sqlite
 
-if (program.project) {
+  if (program.project) {
+    try {
+      const options = YAML.load(program.project)
+
+      splurt.query = options.fetch.query || splurt.query
+      splurt.maximum = options.fetch.maximum || splurt.maximum
+      splurt.databases = options.fetch.databases || splurt.databases
+
+      sqlite = options.sqlite || program.sqlite
+    } catch (e) {
+      console.error(Color.red(e.message))
+      process.exit()
+    }
+  }
+
   try {
-    const options = YAML.load(program.project)
+    const articles = await splurt.execute()
 
-    splurt.query = options.fetch.query || splurt.query
-    splurt.maximum = options.fetch.maximum || splurt.maximum
-    splurt.databases = options.fetch.databases || splurt.databases
-
-    sqlite = options.sqlite || program.sqlite
+    if (sqlite) {
+      const database = await ArticleDatabase.connect(sqlite)
+      await database.replace(articles)
+    } else console.log(articles)
   } catch (e) {
     console.error(Color.red(e.message))
-    process.exit()
   }
-}
-
-splurt.execute()
-  .then(articles => {
-    if (sqlite) {
-      const database = new ArticleDatabase(sqlite)
-      database.init(() => database.replace(articles))
-    } else console.log(articles)
-  })
-  .catch(e => console.error(Color.red(e.message)))
+})()
