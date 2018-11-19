@@ -17,6 +17,9 @@ export class GoogleCiteScraper extends CiteScraper {
       { q: article.title }, { Cookie: this.cookie }
     )
 
+    if (html.data.includes('Please show you&#39;re not a robot'))
+      throw (new Error('Captcha detected'))
+
     const $ = cheerio.load(html.data)
     const links = $('div.gs_r:first-child .gs_ri .gs_fl a')
 
