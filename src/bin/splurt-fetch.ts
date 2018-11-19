@@ -44,8 +44,7 @@ import YAML from 'yamljs'
     const articles = await splurt.execute()
 
     if (sqlite) {
-      const database = new ArticleDatabase(sqlite)
-      await database.init()
+      const database = await ArticleDatabase.connect(sqlite)
       await database.replace(articles)
     } else console.log(articles)
   } catch (e) {

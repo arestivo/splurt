@@ -21,13 +21,15 @@ const createCommand = `
 `
 
 export class ArticleDatabase {
-  constructor(public database: string) { }
+  private constructor(public database: string) { }
 
-  public async init() {
-    if (this.database && !fs.existsSync(this.database)) {
-      const conn = await sqlite.open(this.database)
+  public static async connect(database: string) {
+    if (database && !fs.existsSync(database)) {
+      const conn = await sqlite.open(database)
       conn.run(createCommand)
     }
+
+    return new ArticleDatabase(database)
   }
 
   public async replace(articles: Article[]) {

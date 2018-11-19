@@ -11,7 +11,7 @@ export class SplurtExclude implements SplurtCommand<void> {
     this.verifyOptions()
 
     if (this.sqlite !== undefined) {
-      const database = new ArticleDatabase(this.sqlite)
+      const database = await ArticleDatabase.connect(this.sqlite)
 
       if (this.criteria !== undefined) {
         this.criteria.forEach(async where => {

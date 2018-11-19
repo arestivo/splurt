@@ -15,8 +15,7 @@ export class SplurtCitations implements SplurtCommand<void> {
     const google = new GoogleCiteScraper(this.delay, this.cookie)
 
     if (this.sqlite !== undefined) {
-      const database = new ArticleDatabase(this.sqlite)
-      database.init()
+      const database = await ArticleDatabase.connect(this.sqlite)
       const articles = await database.fetchNeedsCite()
 
       if (articles.length === 0) {
