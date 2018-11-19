@@ -12,7 +12,7 @@ export class GoogleCiteScraper extends CiteScraper {
   public async getCiteCount(article: Article): Promise<number | undefined> {
     await delay(Math.random() * (this.throttle * 1000))
 
-    const html = await this.get(
+    const html = await GoogleCiteScraper.get(
       'https://scholar.google.com/scholar',
       { q: article.title }, { Cookie: this.cookie }
     )
