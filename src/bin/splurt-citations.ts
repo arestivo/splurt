@@ -22,18 +22,14 @@ if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.delay = options.citations.delay
-    splurt.cookie = options.citations.cookie
-    splurt.sqlite = options.sqlite
+    splurt.delay = program.delay || options.citations.delay || splurt.delay
+    splurt.cookie = program.cookie || options.citations.cookie || splurt.cookie
+    splurt.sqlite = program.sqlite || options.sqlite || splurt.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
   }
 }
-
-splurt.delay = program.delay || splurt.delay
-splurt.cookie = program.cookie || splurt.cookie
-splurt.sqlite = program.sqlite || splurt.sqlite
 
 try {
   splurt.execute().catch(e => console.error(Color.red(e.message)))

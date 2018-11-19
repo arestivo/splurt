@@ -12,15 +12,13 @@ export class SplurtExclude implements SplurtCommand<void> {
 
     if (this.sqlite !== undefined) {
       const database = new ArticleDatabase(this.sqlite)
-      database.init(() => {
-        if (this.criteria !== undefined) {
-          this.criteria.forEach(where => {
-            database.exclude(where, n => {
-              console.log(`where: ${Color.green(`${n === undefined ? 0 : n} articles excluded!`)}`)
-            })
-          })
-        } else console.log(Color.red('No criteria selected!'))
-      })
+
+      if (this.criteria !== undefined) {
+        this.criteria.forEach(async where => {
+          const n = await database.exclude(where)
+          console.log(`where: ${Color.green(`${n === undefined ? 0 : n} articles excluded!`)}`)
+        })
+      } else console.log(Color.red('No criteria selected!'))
     }
   }
 
