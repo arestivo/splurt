@@ -27,8 +27,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      this.bar.setTotal(this.bar.getTotal() - (newArticles.length - validArticles.length))
-      this.bar.update(Math.min(articles.length, maximum))
+      this.bar.update(Math.min(current, maximum))
     }
 
     this.bar.stop()
