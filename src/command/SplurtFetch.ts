@@ -7,9 +7,7 @@ import Color from 'colors'
 const dblp = new DBLPArticleScraper()
 
 export class SplurtFetch implements SplurtCommand<Article[]> {
-  public query: string = ''
-  public maximum: number = 10
-  public databases: string[] = []
+  constructor(public query = '', public maximum = 10, public databases: string[] = []) { }
 
   public async execute() {
     this.verifyOptions()
