@@ -4,8 +4,7 @@ import { SplurtCommand } from './SplurtCommand'
 import Color from 'colors'
 
 export class SplurtExclude implements SplurtCommand<void> {
-  public criteria?: string[]
-  public sqlite?: string
+  constructor(public criteria?: string[], public sqlite?: string) { }
 
   public async execute() {
     this.verifyOptions()
