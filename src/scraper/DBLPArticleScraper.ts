@@ -14,15 +14,15 @@ export class DBLPArticleScraper extends ArticleScraper {
     let articles: Article[] = []
 
     const tree = parser.parse(q)
-    q = this.getTreeLexemes(tree).join(' | ')
+    const query = DBLPArticleScraper.getTreeLexemes(tree).join(' | ')
 
     this.bar.start(0, 0)
 
     while (!maximum || current < maximum) {
-      const newArticles = await this.queryPage(q, current, maximum)
+      const newArticles = await this.queryPage(query, current, maximum)
       if (newArticles.length === 0) break
 
-      const validArticles = newArticles.filter(article => this.isValidTitle(article.title, tree))
+      const validArticles = newArticles.filter(article => DBLPArticleScraper.isValidTitle(article.title, tree))
 
       articles = articles.concat(validArticles)
       current += newArticles.length
@@ -36,26 +36,11 @@ export class DBLPArticleScraper extends ArticleScraper {
     return articles.slice(0, maximum)
   }
 
-  private isValidTitle(title : string, tree : any) : boolean {
-    if (!title) return false
-
-    if (tree.lexeme.value)
-      return title.toLowerCase().includes(tree.lexeme.value.toLowerCase().replace(/\'/g, ''))
-
-    if (tree.lexeme.type == 'and')
-      return this.isValidTitle(title, tree.left) && this.isValidTitle(title, tree.right)
-
-    if (tree.lexeme.type == 'or')
-      return this.isValidTitle(title, tree.left) || this.isValidTitle(title, tree.right)
-
-    return true
-  }
-
   private async queryPage(q: string, f: number, maximum: number): Promise<Article[]> {
-    const json = await this.get(this.uri, { q, f, format : 'json' })
+    const json = await DBLPArticleScraper.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
 
-    if (this.bar.getTotal() == 0)
+    if (this.bar.getTotal() === 0)
       this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
 
     return elements ? elements.map(e => e.info).map(
@@ -73,8 +58,8 @@ export class DBLPArticleScraper extends ArticleScraper {
     ) : [] // No articles
   }
 
-  private getTreeLexemes(tree : any) : string[] {
-    let lexemes : Array<string> = []
+  private static getTreeLexemes(tree : any) : string[] {
+    let lexemes : string[] = []
 
     if (tree.lexeme.value)
       lexemes = lexemes.concat(tree.lexeme.value.split('-'))
@@ -86,5 +71,20 @@ export class DBLPArticleScraper extends ArticleScraper {
     lexemes = lexemes.map(lexeme => lexeme.replace(/\W/g, ''))
 
     return lexemes
+  }
+
+  private static isValidTitle(title : string, tree : any) : boolean {
+    if (!title) return false
+
+    if (tree.lexeme.value)
+      return title.toLowerCase().includes(tree.lexeme.value.toLowerCase().replace(/\'/g, ''))
+
+    if (tree.lexeme.type === 'and')
+      return this.isValidTitle(title, tree.left) && this.isValidTitle(title, tree.right)
+
+    if (tree.lexeme.type === 'or')
+      return this.isValidTitle(title, tree.left) || this.isValidTitle(title, tree.right)
+
+    return true
   }
 }
