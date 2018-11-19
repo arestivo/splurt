@@ -31,9 +31,9 @@ if (program.project) {
   }
 }
 
-splurt.delay = program.delay ? program.delay : splurt.delay
-splurt.cookie = program.cookie ? program.cookie : splurt.cookie
-splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite
+splurt.delay = program.delay || splurt.delay
+splurt.cookie = program.cookie || splurt.cookie
+splurt.sqlite = program.sqlite || splurt.sqlite
 
 try {
   splurt.execute().catch(e => console.error(Color.red(e.message)))

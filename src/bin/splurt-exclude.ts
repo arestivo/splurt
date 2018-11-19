@@ -31,8 +31,8 @@ if (program.project) {
   }
 }
 
-splurt.criteria = program.exclude ? program.exclude : splurt.criteria
-splurt.sqlite = program.sqlite ? program.sqlite : splurt.sqlite
+splurt.criteria = program.exclude || splurt.criteria
+splurt.sqlite = program.sqlite || splurt.sqlite
 
 try {
   splurt.execute().catch(e => console.error(Color.red(e.message)))
