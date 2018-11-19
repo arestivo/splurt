@@ -16,7 +16,7 @@ export class SplurtExclude implements SplurtCommand<void> {
         if (this.criteria !== undefined) {
           this.criteria.forEach(where => {
             database.exclude(where, n => {
-              console.log(`where: ${Color.green(`${n === undefined ? 0 : n} articles excluded!`)}`)
+              console.log(`where: ${Color.green(`${n || 0} articles excluded!`)}`)
             })
           })
         } else console.log(Color.red('No criteria selected!'))
