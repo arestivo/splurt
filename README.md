@@ -13,8 +13,8 @@ sudo npm install -g --unsafe-perm splurt
 Locally:
 
 ```
-sudo npm install splurt
-sudo link
+npm run-script build 
+npm link
 ```
 
 which will make the binaries available through a series of links, such as:
@@ -27,6 +27,8 @@ which will make the binaries available through a series of links, such as:
 /usr/local/bin/splurt-export -> /usr/local/lib/node_modules/splurt/build/src/bin/splurt-export.js
 /usr/local/lib/node_modules/splurt -> <DEV_DIR>
 ```
+
+Please be aware that you might need to prefix some of these commands with `sudo`. However, this is a security red-flag, and there's no reason (with the appropriate shell configuration) to leave user-land mode.
 
 ## Fetch
 
