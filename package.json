@@ -11,7 +11,8 @@
     "splurt": "./build/bin/splurt.js",
     "splurt-fetch": "./build/bin/splurt-fetch.js",
     "splurt-citations": "./build/bin/splurt-citations.js",
-    "splurt-exclude": "./build/bin/splurt-exclude.js"
+    "splurt-exclude": "./build/bin/splurt-exclude.js",
+    "splurt-export": "./build/bin/splurt-export.js"
   },
   "scripts": {
     "build": "tsc",
@@ -27,6 +28,7 @@
     "@types/cli-progress": "^1.8.0",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.9",
+    "@types/table": "^4.0.5",
     "@types/yamljs": "^0.2.30",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
@@ -43,9 +45,11 @@
     "commander": "^2.19.0",
     "delay": "^4.1.0",
     "es6-promise-pool": "^2.5.0",
+    "jsonexport": "^2.4.1",
     "logic-query-parser": "0.0.5",
     "npm": "^6.4.1",
     "sqlite": "^3.0.0",
+    "table": "^5.1.0",
     "yamljs": "^0.3.0"
   }
 }

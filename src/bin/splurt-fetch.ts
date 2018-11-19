@@ -18,7 +18,6 @@ import YAML from 'yamljs'
     .option('-d, --databases <list>', 'Comma separated list of databases to search.', list, [])
     .option('-m, --max [n]', 'Maximum number of results.', 10)
     .option('-s, --sqlite <database>', 'SQLite database used to store articles.', undefined)
-    .option('--verbose <database>', 'Verbose output.')
 
     .parse(process.argv)
 
@@ -29,8 +28,11 @@ import YAML from 'yamljs'
     try {
       const options = YAML.load(program.project)
 
-      splurt.query = options.fetch.query || splurt.query
-      splurt.maximum = options.fetch.maximum || splurt.maximum
+      if (options.fetch) {
+        splurt.query = options.fetch.query || splurt.query
+        splurt.maximum = options.fetch.maximum || splurt.maximum
+      }
+
       splurt.databases = options.fetch.databases || splurt.databases
 
       sqlite = options.sqlite || program.sqlite

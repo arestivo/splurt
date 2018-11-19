@@ -5,6 +5,7 @@ import { SplurtExclude } from '../command/SplurtExclude'
 import Color from 'colors'
 import program from 'commander'
 import YAML from 'yamljs'
+import { SplurtExport } from '../command/SplurtExport'
 
 const list = (l: string) => l.split(',').map(v => v.trim())
 
@@ -12,19 +13,22 @@ program
   .version('0.0.1')
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
-  .option('-e, --exclude <criteria>', 'Comma separated exclusion criteria using SQL.', list)
+  .option('-f, --format <format>', 'Export format.', 'csv')
+  .option('-d, --data <list>', 'Data columns to export (id, title, authors, year, publication, doi, cites).', list)
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
 
   .parse(process.argv)
 
-const splurt = new SplurtExclude(program.exclude, program.sqlite)
+const splurt = new SplurtExport(program.format, program.sqlite, program.data)
 
 if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    if (options.exclude)
-      splurt.criteria = options.exclude.criteria || splurt.criteria
+    if (options.export) {
+      splurt.format = options.export.format || splurt.format
+      splurt.data = options.export.data || splurt.data
+    }
 
     splurt.sqlite = options.sqlite || splurt.sqlite
   } catch (e) {

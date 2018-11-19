@@ -71,4 +71,14 @@ export class ArticleDatabase {
       return update.changes
     }
   }
+
+  public async getSelectedArticles(data? : string[]): Promise<any> {
+    if (this.database) {
+      const columns = data ? data.join(', ') : 'id, title, year, authors, publication, doi, cites'
+      const conn = await sqlite.open(this.database)
+      const stmt = await conn.prepare(`SELECT ${columns} FROM article WHERE included AND NOT excluded`)
+      const articles = await stmt.all()
+      return articles
+    }
+  }
 }
