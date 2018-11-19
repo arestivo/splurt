@@ -4,13 +4,16 @@ Systematic Literate Review Tool
 
 ## Install
 
+Globally:
+
 ```
 sudo npm install -g --unsafe-perm splurt
 ```
 
-or locally:
+Locally:
 
 ```
+sudo npm install splurt
 sudo link
 ```
 
