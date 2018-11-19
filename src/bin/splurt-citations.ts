@@ -16,15 +16,15 @@ program
 
   .parse(process.argv)
 
-const splurt = new SplurtCitations()
+const splurt = new SplurtCitations(program.delay, program.cookie, program.sqlite)
 
 if (program.project) {
   try {
     const options = YAML.load(program.project)
 
-    splurt.delay = program.delay || options.citations.delay || splurt.delay
-    splurt.cookie = program.cookie || options.citations.cookie || splurt.cookie
-    splurt.sqlite = program.sqlite || options.sqlite || splurt.sqlite
+    splurt.delay = options.citations.delay || splurt.delay
+    splurt.cookie = options.citations.cookie || splurt.cookie
+    splurt.sqlite = options.sqlite || splurt.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
     process.exit()
