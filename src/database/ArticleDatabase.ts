@@ -33,6 +33,8 @@ export class ArticleDatabase {
       const conn = await sqlite.open(this.database)
       await conn.run('UPDATE article SET included = false AND excluded = false')
 
+      //TODO: get cites from database so we don't lose that information
+
       articles.forEach(async article => {
         await conn.run('INSERT OR REPLACE INTO article VALUES (NULL, ?, ?, ?, ?, ?, NULL, true, false)',
           article.title,
