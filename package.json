@@ -6,12 +6,12 @@
     "type": "git",
     "url": "https://github.com/arestivo/splurt.git"
   },
-  "main": "./build/src/bin/splurt.js",
+  "main": "./build/bin/splurt.js",
   "bin": {
-    "splurt": "./build/src/bin/splurt.js",
-    "splurt-fetch": "./build/src/bin/splurt-fetch.js",
-    "splurt-citations": "./build/src/bin/splurt-citations.js",
-    "splurt-exclude": "./build/src/bin/splurt-exclude.js"
+    "splurt": "./build/bin/splurt.js",
+    "splurt-fetch": "./build/bin/splurt-fetch.js",
+    "splurt-citations": "./build/bin/splurt-citations.js",
+    "splurt-exclude": "./build/bin/splurt-exclude.js"
   },
   "scripts": {
     "build": "tsc",
