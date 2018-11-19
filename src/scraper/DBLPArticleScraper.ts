@@ -3,7 +3,7 @@ import { ArticleScraper } from './ArticleScraper'
 
 import progress, { Bar } from 'cli-progress'
 
-var parser = require('logic-query-parser');
+const parser = require('logic-query-parser')
 
 export class DBLPArticleScraper extends ArticleScraper {
   public uri = 'http://dblp.org/search/publ/api'
@@ -13,16 +13,16 @@ export class DBLPArticleScraper extends ArticleScraper {
     let current = 0
     let articles: Article[] = []
 
-    let tree = parser.parse(q)
+    const tree = parser.parse(q)
     q = this.getTreeLexemes(tree).join(' | ')
 
     this.bar.start(0, 0)
 
     while (!maximum || current < maximum) {
-      let newArticles = await this.queryPage(q, current, maximum)
+      const newArticles = await this.queryPage(q, current, maximum)
       if (newArticles.length === 0) break
 
-      let validArticles = newArticles.filter(article => this.isValidTitle(article.title, tree))
+      const validArticles = newArticles.filter(article => this.isValidTitle(article.title, tree))
 
       articles = articles.concat(validArticles)
       current += newArticles.length
