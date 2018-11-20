@@ -1,3 +1,11 @@
 export interface Article {
-   title: string;
+  origin: string
+
+  title: string
+  year: number
+
+  doi?: string
+  publication?: string
+  authors?: string
+  cites?: number
 }
