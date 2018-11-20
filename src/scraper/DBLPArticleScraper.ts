@@ -59,7 +59,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      bar.update(Math.min(current, maximum), { fetched: articles.length })
+      bar.update(Math.min(current, maximum ? maximum : current), { fetched: articles.length })
     }
 
     bar.stop()
@@ -70,11 +70,9 @@ export class DBLPArticleScraper extends ArticleScraper {
   private async queryPage(q: string, f: number, maximum: number, bar : Bar): Promise<Article[]> {
     const json = await DBLPArticleScraper.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
+    const total = json.data.result.hits['@total']
 
-    if (maximum)
-      bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
-    else
-      bar.setTotal(json.data.result.hits['@total'])
+    bar.setTotal(Math.min(total , maximum ? maximum : total))
 
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({
