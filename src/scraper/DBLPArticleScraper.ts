@@ -7,7 +7,9 @@ const parser = require('logic-query-parser')
 
 export class DBLPArticleScraper extends ArticleScraper {
   public uri = 'http://dblp.org/search/publ/api'
-  public bar = new Bar({}, progress.Presets.shades_classic)
+  public bar = new Bar({
+    format: 'dblp [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
+  }, progress.Presets.shades_classic)
 
   public async query(q: string, maximum: number = 10): Promise<Article[]> {
     let current = 0
@@ -16,7 +18,7 @@ export class DBLPArticleScraper extends ArticleScraper {
     const tree = parser.parse(q)
     const query = DBLPArticleScraper.getTreeLexemes(tree).join(' | ')
 
-    this.bar.start(0, 0)
+    this.bar.start(maximum, 0)
 
     while (!maximum || current < maximum) {
       const newArticles = await this.queryPage(query, current, maximum)
@@ -39,8 +41,7 @@ export class DBLPArticleScraper extends ArticleScraper {
     const json = await DBLPArticleScraper.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
 
-    if (this.bar.getTotal() === 0)
-      this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
+    this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
 
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({

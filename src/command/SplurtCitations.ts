@@ -22,7 +22,9 @@ export class SplurtCitations implements SplurtCommand<void> {
         console.log(Color.green('All articles have citations!'))
       }
 
-      const bar = new Bar({}, progress.Presets.shades_classic)
+      const bar = new Bar({
+        format: 'citations [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
+      }, progress.Presets.shades_classic)
       bar.start(articles.length, 0)
 
       for (let i = 0; i < articles.length; i += 1)

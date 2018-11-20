@@ -47,6 +47,7 @@ import YAML from 'yamljs'
 
     if (sqlite) {
       const database = await ArticleDatabase.connect(sqlite)
+      console.log(Color.green(`Writing ${articles.length} articles to the database!`))
       await database.replace(articles)
     } else console.log(articles)
   } catch (e) {
