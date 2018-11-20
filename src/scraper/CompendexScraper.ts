@@ -12,7 +12,6 @@ interface CompendexResult {
 
 interface CompendexResponse {
     results: CompendexResult[];
-
 }
 
 /**
@@ -43,6 +42,13 @@ function validateResponse(response: any): response is CompendexResponse {
 
 
 export class CompendexScraper extends Scraper {
+    private cookie?: string;
+
+    constructor(cookie?: string) {
+        super();
+        this.cookie = cookie;
+    }
+
     async query(q: string): Promise<any> {
         // TODO:
     }
@@ -53,6 +59,8 @@ export class CompendexScraper extends Scraper {
         }
 
         return response.results.map(({title, sd, doi}) => {
+            /* The `sd` can be either "2018", or something like "June 2018" or "Aug. 2018".
+             * Which is why we only need the last 4 digits. */
             const year: number = Number.parseInt(sd.slice(-4));
 
             assert(!Number.isNaN(year));
