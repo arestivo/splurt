@@ -48,7 +48,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       format: `dblp ${query} [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}`
     }, progress.Presets.shades_classic)
 
-    bar.start(maximum, 0, { fetched: 0 })
+    bar.start(maximum || 1, 0, { fetched: 0 })
 
     while (!maximum || articles.length < maximum) {
       const newArticles = await this.queryPage(query, current, maximum, bar)
