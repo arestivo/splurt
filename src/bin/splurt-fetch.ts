@@ -30,7 +30,7 @@ import YAML from 'yamljs'
 
       if (options.fetch) {
         splurt.query = options.fetch.query || splurt.query
-        splurt.maximum = options.fetch.maximum || splurt.maximum
+        splurt.maximum = options.fetch.maximum === undefined ? splurt.maximum : options.fetch.maximum //0
       }
 
       splurt.databases = options.fetch.databases || splurt.databases

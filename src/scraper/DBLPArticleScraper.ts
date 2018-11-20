@@ -20,6 +20,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       ))
     )
 
+    console.log(maximum)
     console.log(`DBLP Lexemes: ${lexemes.join(' | ')}`)
 
     for (const lexeme of lexemes) {
@@ -71,7 +72,10 @@ export class DBLPArticleScraper extends ArticleScraper {
     const json = await DBLPArticleScraper.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
 
-    bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
+    if (maximum)
+      bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
+    else
+      bar.setTotal(json.data.result.hits['@total'])
 
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({
