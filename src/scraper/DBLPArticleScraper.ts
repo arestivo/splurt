@@ -20,7 +20,6 @@ export class DBLPArticleScraper extends ArticleScraper {
       ))
     )
 
-    console.log(maximum)
     console.log(`DBLP Lexemes: ${lexemes.join(' | ')}`)
 
     for (const lexeme of lexemes) {
