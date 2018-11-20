@@ -12,7 +12,7 @@ export class DBLPArticleScraper extends ArticleScraper {
   public async query(q: string, maximum: number = 10): Promise<Article[]> {
     let articles: Article[] = []
 
-    const tree = parser.parse(q.replace('\'', '"'))
+    const tree = parser.parse(q.replace(/\'/g, '"'))
 
     const lexemes = DBLPArticleScraper.getTreeLexemes(tree).filter((lexeme, index, self) =>
       index === self.findIndex((other : string) => (
@@ -27,15 +27,15 @@ export class DBLPArticleScraper extends ArticleScraper {
 
       articles = articles.concat(newArticles)
 
+      // Remove duplicates
+      articles = articles.filter((article, index, self) =>
+        index === self.findIndex(a => (
+          article.title === a.title && article.year === a.year
+        ))
+      )
+
       if (maximum && articles.length > maximum) break
     }
-
-    // Remove duplicates
-    articles = articles.filter((article, index, self) =>
-      index === self.findIndex(a => (
-        article.title === a.title && article.year === a.year
-      ))
-    )
 
     return articles.slice(0, maximum)
   }
