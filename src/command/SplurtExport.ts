@@ -17,7 +17,7 @@ export class SplurtExport implements SplurtCommand<void> {
 
       switch (this.format) {
         case 'csv':
-          jsonexport(articles, { rowDelimiter: '|' }, (err : any, csv : any) => {
+          jsonexport(articles, { rowDelimiter: ',', forceTextDelimiter : true }, (err : any, csv : any) => {
             if (err) return console.log(err)
             console.log(csv)
           })
