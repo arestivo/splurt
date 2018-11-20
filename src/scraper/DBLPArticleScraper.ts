@@ -23,11 +23,9 @@ export class DBLPArticleScraper extends ArticleScraper {
     console.log(`DBLP Lexemes: ${lexemes.join(' | ')}`)
 
     for (const lexeme of lexemes) {
-      const newArticles = await this.queryPartial(lexeme, maximum, tree)
+      const newArticles = await this.queryPartial(lexeme, maximum, tree, articles.length)
 
       articles = articles.concat(newArticles)
-
-      console.log(articles.length)
 
       // Remove duplicates
       articles = articles.filter((article, index, self) =>
@@ -36,15 +34,13 @@ export class DBLPArticleScraper extends ArticleScraper {
         ))
       )
 
-      console.log(articles.length)
-
       if (maximum && articles.length > maximum) break
     }
 
     return maximum ? articles.slice(0, maximum) : articles
   }
 
-  private async queryPartial(query: string, maximum: number = 10, tree : any): Promise<Article[]> {
+  private async queryPartial(query: string, maximum: number = 10, tree : any, previous: number): Promise<Article[]> {
     let current = 0
     let articles: Article[] = []
 
@@ -52,7 +48,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       format: `dblp ${query} [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}`
     }, progress.Presets.shades_classic)
 
-    bar.start(maximum || 1, 0, { fetched: 0 })
+    bar.start(maximum || 1, 0, { fetched : previous })
 
     while (!maximum || articles.length < maximum) {
       const newArticles = await this.queryPage(query, current, maximum, bar)
@@ -63,7 +59,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      bar.update(Math.min(current, maximum ? maximum : current), { fetched: articles.length })
+      bar.update(Math.min(current, maximum ? maximum : current), { fetched: articles.length + previous })
     }
 
     bar.stop()
