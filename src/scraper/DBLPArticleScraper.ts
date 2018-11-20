@@ -4,11 +4,12 @@ import { ArticleScraper } from './ArticleScraper'
 import progress, { Bar } from 'cli-progress'
 
 const parser = require('logic-query-parser')
+const entities = require('html-entities').AllHtmlEntities
 
 export class DBLPArticleScraper extends ArticleScraper {
   public uri = 'http://dblp.org/search/publ/api'
   public bar = new Bar({
-    format: 'dblp [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
+    format: 'dblp [{bar}] {percentage}% | Fetched: {fetched} | ETA: {eta}s | {value}/{total}'
   }, progress.Presets.shades_classic)
 
   public async query(q: string, maximum: number = 10): Promise<Article[]> {
@@ -18,7 +19,7 @@ export class DBLPArticleScraper extends ArticleScraper {
     const tree = parser.parse(q)
     const query = DBLPArticleScraper.getTreeLexemes(tree).join(' | ')
 
-    this.bar.start(maximum, 0)
+    this.bar.start(maximum, 0, { fetched: 0 })
 
     while (!maximum || current < maximum) {
       const newArticles = await this.queryPage(query, current, maximum)
@@ -29,7 +30,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      this.bar.update(Math.min(current, maximum))
+      this.bar.update(Math.min(current, maximum), { fetched: articles.length })
     }
 
     this.bar.stop()
@@ -46,10 +47,10 @@ export class DBLPArticleScraper extends ArticleScraper {
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({
         origin: 'dblp',
-        title: decodeURI(i.title),
+        title: entities.decode(i.title),
         year: i.year,
         doi: i.doi,
-        publication: decodeURI(i.venue),
+        publication: entities.decode(i.venue ? i.venue.toString() : undefined),
         authors: i.authors ? (
             Array.isArray(i.authors.author) ?
             i.authors.author.join(', ') :

@@ -45,6 +45,7 @@
     "commander": "^2.19.0",
     "delay": "^4.1.0",
     "es6-promise-pool": "^2.5.0",
+    "html-entities": "^1.2.1",
     "jsonexport": "^2.4.1",
     "logic-query-parser": "0.0.5",
     "npm": "^6.4.1",
