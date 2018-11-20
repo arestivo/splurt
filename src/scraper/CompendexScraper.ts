@@ -1,9 +1,13 @@
+const assert = require('assert')
+
 import {Article} from '../data/Article'
 import {Scraper} from './Scraper'
 
 interface CompendexResult {
     title: string;
     source: string;
+    sd: string;
+    doi: string;
 }
 
 interface CompendexResponse {
@@ -29,7 +33,12 @@ function validateResponse(response: any): response is CompendexResponse {
         return false;
     }
 
-    return response.results.every((result: any) => result.hasOwnProperty('title') && result.hasOwnProperty('source'))
+    return response.results.every((result: any) =>
+        result.hasOwnProperty('title') &&
+        result.hasOwnProperty('source') &&
+        result.hasOwnProperty('sd') &&
+        result.hasOwnProperty('doi')
+    )
 }
 
 
@@ -43,6 +52,12 @@ export class CompendexScraper extends Scraper {
             throw new Error('CompendexScraper: Unexpected format received.')
         }
 
-        return response.results.map(result => ({title: result.title}))
+        return response.results.map(({title, sd, doi}) => {
+            const year: number = Number.parseInt(sd.slice(-4));
+
+            assert(!Number.isNaN(year));
+
+            return ({title, origin: 'Compendex', year, doi});
+        })
     }
 }
