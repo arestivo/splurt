@@ -27,6 +27,8 @@ export class DBLPArticleScraper extends ArticleScraper {
 
       articles = articles.concat(newArticles)
 
+      console.log(articles.length)
+
       // Remove duplicates
       articles = articles.filter((article, index, self) =>
         index === self.findIndex(a => (
@@ -34,10 +36,12 @@ export class DBLPArticleScraper extends ArticleScraper {
         ))
       )
 
+      console.log(articles.length)
+
       if (maximum && articles.length > maximum) break
     }
 
-    return articles.slice(0, maximum)
+    return maximum ? articles.slice(0, maximum) : articles
   }
 
   private async queryPartial(query: string, maximum: number = 10, tree : any): Promise<Article[]> {
@@ -64,7 +68,7 @@ export class DBLPArticleScraper extends ArticleScraper {
 
     bar.stop()
 
-    return articles.slice(0, maximum)
+    return maximum ? articles.slice(0, maximum) : articles
   }
 
   private async queryPage(q: string, f: number, maximum: number, bar : Bar): Promise<Article[]> {
