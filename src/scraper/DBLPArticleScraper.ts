@@ -8,21 +8,50 @@ const entities = require('html-entities').AllHtmlEntities
 
 export class DBLPArticleScraper extends ArticleScraper {
   public uri = 'http://dblp.org/search/publ/api'
-  public bar = new Bar({
-    format: 'dblp [{bar}] {percentage}% | Fetched: {fetched} | ETA: {eta}s | {value}/{total}'
-  }, progress.Presets.shades_classic)
 
   public async query(q: string, maximum: number = 10): Promise<Article[]> {
+    let articles: Article[] = []
+
+    const tree = parser.parse(q.replace('\'', '"'))
+
+    const lexemes = DBLPArticleScraper.getTreeLexemes(tree).filter((lexeme, index, self) =>
+      index === self.findIndex((other : string) => (
+        lexeme === other
+      ))
+    )
+
+    console.log(`DBLP Lexemes: ${lexemes.join(' | ')}`)
+
+    for (const lexeme of lexemes) {
+      const newArticles = await this.queryPartial(lexeme, maximum, tree)
+
+      articles = articles.concat(newArticles)
+
+      if (maximum && articles.length > maximum) break
+    }
+
+    // Remove duplicates
+    articles = articles.filter((article, index, self) =>
+      index === self.findIndex(a => (
+        article.title === a.title && article.year === a.year
+      ))
+    )
+
+    return articles.slice(0, maximum)
+  }
+
+  private async queryPartial(query: string, maximum: number = 10, tree : any): Promise<Article[]> {
     let current = 0
     let articles: Article[] = []
 
-    const tree = parser.parse(q)
-    const query = DBLPArticleScraper.getTreeLexemes(tree).join(' | ')
+    const bar = new Bar({
+      format: `dblp ${query} [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}`
+    }, progress.Presets.shades_classic)
 
-    this.bar.start(maximum, 0, { fetched: 0 })
+    bar.start(maximum, 0, { fetched: 0 })
 
-    while (!maximum || current < maximum) {
-      const newArticles = await this.queryPage(query, current, maximum)
+    while (!maximum || articles.length < maximum) {
+      const newArticles = await this.queryPage(query, current, maximum, bar)
       if (newArticles.length === 0) break
 
       const validArticles = newArticles.filter(article => DBLPArticleScraper.isValidTitle(article.title, tree))
@@ -30,19 +59,19 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      this.bar.update(Math.min(current, maximum), { fetched: articles.length })
+      bar.update(Math.min(current, maximum), { fetched: articles.length })
     }
 
-    this.bar.stop()
+    bar.stop()
 
     return articles.slice(0, maximum)
   }
 
-  private async queryPage(q: string, f: number, maximum: number): Promise<Article[]> {
+  private async queryPage(q: string, f: number, maximum: number, bar : Bar): Promise<Article[]> {
     const json = await DBLPArticleScraper.get(this.uri, { q, f, format : 'json' })
     const elements: any[] = json.data.result.hits.hit
 
-    this.bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
+    bar.setTotal(Math.min(json.data.result.hits['@total'], maximum))
 
     return elements ? elements.map(e => e.info).map(
       (i: any) => ({
@@ -60,18 +89,27 @@ export class DBLPArticleScraper extends ArticleScraper {
   }
 
   private static getTreeLexemes(tree : any) : string[] {
-    let lexemes : string[] = []
-
     if (tree.lexeme.value)
-      lexemes = lexemes.concat(tree.lexeme.value.split('-'))
-    if (tree.left)
+      return [tree.lexeme.value.replace(/\s+/g, ' ').replace('-', ' ').toLowerCase()]
+
+    let lexemes : string[] = []
+    if (tree.lexeme.type === 'or') {
       lexemes = lexemes.concat(this.getTreeLexemes(tree.left))
-    if (tree.right)
       lexemes = lexemes.concat(this.getTreeLexemes(tree.right))
+      lexemes = lexemes.map(lexeme => lexeme.replace(/[^a-zA-Z\s-]/g, ''))
+      return lexemes
+    }
 
-    lexemes = lexemes.map(lexeme => lexeme.replace(/\W/g, ''))
+    if (tree.lexeme.type === 'and') {
+      const left = this.getTreeLexemes(tree.left)
+      const right = this.getTreeLexemes(tree.right)
 
-    return lexemes
+      if (left.length === 1 && right.length === 1)
+        return [`${left[0]}, ${right[0]}`]
+      return left.concat(right)
+    }
+
+    return []
   }
 
   private static isValidTitle(title : string, tree : any) : boolean {
