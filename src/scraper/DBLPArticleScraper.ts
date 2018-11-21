@@ -45,7 +45,7 @@ export class DBLPArticleScraper extends ArticleScraper {
     let articles: Article[] = []
 
     const bar = new Bar({
-      format: `dblp ${query} [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}`
+      format: `dblp ${query} [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}`
     }, progress.Presets.shades_classic)
 
     bar.start(maximum || 1, 0, { })
