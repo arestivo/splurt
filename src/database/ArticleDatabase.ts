@@ -17,7 +17,9 @@ const createCommand = `
     cites INTEGER,
 
     included BOOLEAN NOT NULL,
-    excluded BOOLEAN NOT NULL
+    excluded BOOLEAN NOT NULL,
+
+    UNIQUE (origin, title, year)
   )
 `
 
@@ -35,18 +37,34 @@ export class ArticleDatabase {
       const conn = await sqlite.open(this.database)
       await conn.run('UPDATE article SET included = false AND excluded = false')
 
-      //TODO: get cites from database so we don't lose that information
-
       articles.forEach(async article => {
-        await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
+        const stmt = await conn.prepare('SELECT * FROM article WHERE title = ? AND year = ? AND origin = ?')
+        const existing = await stmt.get(
           article.title,
           article.year,
-          article.doi,
-          article.publication,
-          article.authors,
-          article.type,
           article.origin
         )
+
+        if (existing)
+          await conn.run('UPDATE article SET doi = ?, publication = ?, authors = ?, type = ?, included = true, excluded = false WHERE title = ? AND year = ? AND origin = ?',
+            article.doi,
+            article.publication,
+            article.authors,
+            article.type,
+            article.title,
+            article.year,
+            article.origin
+          )
+        else
+          await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
+            article.title,
+            article.year,
+            article.doi,
+            article.publication,
+            article.authors,
+            article.type,
+            article.origin
+          )
       })
     }
   }
