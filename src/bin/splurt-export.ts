@@ -10,7 +10,7 @@ import { SplurtExport } from '../command/SplurtExport'
 const list = (l: string) => l.split(',').map(v => v.trim())
 
 program
-  .version('0.0.1')
+  .version('0.0.11')
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
   .option('-f, --format <format>', 'Export format.', 'csv')
