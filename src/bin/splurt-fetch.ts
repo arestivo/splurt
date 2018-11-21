@@ -16,13 +16,14 @@ import YAML from 'yamljs'
     .option('-p, --project <file>', 'Read config from project YAML file.')
     .option('-q, --query <q>', 'Search query', '')
     .option('-d, --databases <list>', 'Comma separated list of databases to search.', list, [])
+    .option('--validate', 'Validate if article title follows query.')
     .option('--scopus <key>', 'Scopus API key.')
     .option('-m, --max [n]', 'Maximum number of results.', 10)
     .option('-s, --sqlite <database>', 'SQLite database used to store articles.', undefined)
 
     .parse(process.argv)
 
-  const splurt = new SplurtFetch(program.query, program.maximum, program.databases, program.scopus)
+  const splurt = new SplurtFetch(program.query, program.maximum, program.databases, program.scopus, program.validate)
   let sqlite: string = program.sqlite
 
   if (program.project) {
@@ -31,6 +32,7 @@ import YAML from 'yamljs'
 
       if (options.fetch) {
         splurt.query = options.fetch.query || splurt.query
+        splurt.validate = options.fetch.validate || splurt.validate
         splurt.maximum = options.fetch.maximum === undefined ? splurt.maximum : options.fetch.maximum //0
         splurt.scopusKey = options.fetch.scopus || splurt.scopusKey
       }

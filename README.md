@@ -123,7 +123,7 @@ citations:
   delay: 2
   cookie: 'COOKIE=value'
 
-export
+export:
   data: [title, year, cites]
   format: table
 ```
