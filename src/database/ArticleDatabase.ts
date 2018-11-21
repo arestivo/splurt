@@ -39,11 +39,7 @@ export class ArticleDatabase {
 
       articles.forEach(async article => {
         const stmt = await conn.prepare('SELECT * FROM article WHERE title = ? AND year = ? AND origin = ?')
-        const existing = await stmt.get(
-          article.title,
-          article.year,
-          article.origin
-        )
+        const existing = await stmt.get(article.title, article.year, article.origin)
 
         if (existing)
           await conn.run('UPDATE article SET doi = ?, publication = ?, authors = ?, type = ?, included = true, excluded = false WHERE title = ? AND year = ? AND origin = ?',
