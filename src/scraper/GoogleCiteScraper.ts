@@ -14,7 +14,7 @@ export class GoogleCiteScraper extends CiteScraper {
 
     const html = await GoogleCiteScraper.get(
       'https://scholar.google.com/scholar',
-      article.doi ? { q: article.doi} : { q: article.title }, { Cookie: this.cookie }
+      article.doi ? { q: article.doi } : { q: article.title }, { Cookie: this.cookie }
     )
 
     if (html.data.includes('Please show you&#39;re not a robot'))
