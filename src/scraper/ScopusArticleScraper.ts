@@ -10,7 +10,7 @@ const entities = require('html-entities').AllHtmlEntities
 export class ScopusArticleScraper extends ArticleScraper {
   public uri = 'https://api.elsevier.com/content/search/scopus'
 
-  public constructor(public key? : string){
+  public constructor(public key? : string) {
     super()
   }
 
