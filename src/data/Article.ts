@@ -8,4 +8,5 @@ export interface Article {
   publication?: string
   authors?: string
   cites?: number
+  type?: string
 }

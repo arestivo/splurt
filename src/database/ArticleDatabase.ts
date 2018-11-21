@@ -12,6 +12,8 @@ const createCommand = `
     doi VARCHAR,
     publication VARCHAR,
     authors VARCHAR,
+    type varchar,
+    origin varchar,
     cites INTEGER,
 
     included BOOLEAN NOT NULL,
@@ -36,12 +38,14 @@ export class ArticleDatabase {
       //TODO: get cites from database so we don't lose that information
 
       articles.forEach(async article => {
-        await conn.run('INSERT OR REPLACE INTO article VALUES (NULL, ?, ?, ?, ?, ?, NULL, true, false)',
+        await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
           article.title,
           article.year,
           article.doi,
           article.publication,
           article.authors,
+          article.type,
+          article.origin
         )
       })
     }

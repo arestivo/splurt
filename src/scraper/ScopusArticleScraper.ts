@@ -23,10 +23,10 @@ export class ScopusArticleScraper extends ArticleScraper {
     let articles: Article[] = []
 
     const bar = new Bar({
-      format: 'scopus [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}'
+      format: 'scopus [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
     }, progress.Presets.shades_classic)
 
-    bar.start(maximum || 1, 0, { fetched : 0 })
+    bar.start(maximum || 1, 0, { })
 
     while (!maximum || articles.length < maximum) {
       const newArticles = await this.queryPage(query, current, maximum, bar)
@@ -35,7 +35,7 @@ export class ScopusArticleScraper extends ArticleScraper {
       articles = articles.concat(newArticles)
       current += newArticles.length
 
-      bar.update(Math.min(current, maximum ? maximum : current), { fetched: articles.length })
+      bar.update(Math.min(current, maximum ? maximum : current), { })
     }
 
     bar.stop()
@@ -65,7 +65,8 @@ export class ScopusArticleScraper extends ArticleScraper {
         year: e['prism:coverDate'].match(/\d{4}/)[0],
         doi: e['prism:doi'],
         publication: e['prism:publicationName'],
-        authors: e['dc:creator']
+        authors: e['dc:creator'],
+        type: e['prism:aggregationType']
       })
     ) : [] // No articles
   }

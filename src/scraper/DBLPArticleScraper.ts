@@ -48,7 +48,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       format: `dblp ${query} [{bar}] {percentage}% | A: {fetched} | ETA: {eta}s | {value}/{total}`
     }, progress.Presets.shades_classic)
 
-    bar.start(maximum || 1, 0, { fetched : previous })
+    bar.start(maximum || 1, 0, { })
 
     while (!maximum || articles.length < maximum) {
       const newArticles = await this.queryPage(query, current, maximum, bar)
@@ -59,9 +59,10 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      bar.update(Math.min(current, maximum ? maximum : current), { fetched: articles.length + previous })
+      bar.update(Math.min(articles.length, maximum ? maximum : current), {  })
     }
 
+    bar.update(Math.min(maximum ? maximum : current, maximum ? maximum : current), {  })
     bar.stop()
 
     return maximum ? articles.slice(0, maximum) : articles
@@ -84,7 +85,8 @@ export class DBLPArticleScraper extends ArticleScraper {
         authors: i.authors ? (
             Array.isArray(i.authors.author) ?
             i.authors.author.join(', ') :
-            i.authors.author) : undefined // Undefined author
+            i.authors.author) : undefined, // Undefined author
+        type: i.type
       })
     ) : [] // No articles
   }
