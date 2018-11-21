@@ -10,7 +10,7 @@ program
   .version('0.0.1')
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
-  .option('-d, --delay <s>', 'Delay between requests.', 2)
+  .option('-d, --delay <s>', 'Delay between requests.', 10)
   .option('-c, --cookie <c>', 'Cookie to add to header.')
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
 
