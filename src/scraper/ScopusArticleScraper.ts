@@ -66,8 +66,15 @@ export class ScopusArticleScraper extends ArticleScraper {
         doi: e['prism:doi'],
         publication: e['prism:publicationName'],
         authors: e['dc:creator'],
-        type: e['prism:aggregationType']
+        type: ScopusArticleScraper.normalizeType(e['prism:aggregationType'])
       })
     ) : [] // No articles
+  }
+
+  protected static normalizeType(type : string) {
+    switch (type) {
+      case 'Journal': return 'journal'
+      default: return type
+    }
   }
 }

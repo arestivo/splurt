@@ -86,7 +86,7 @@ export class DBLPArticleScraper extends ArticleScraper {
             Array.isArray(i.authors.author) ?
             i.authors.author.join(', ') :
             i.authors.author) : undefined, // Undefined author
-        type: i.type
+        type: DBLPArticleScraper.normalizeType(i.type)
       })
     ) : [] // No articles
   }
@@ -113,5 +113,15 @@ export class DBLPArticleScraper extends ArticleScraper {
     }
 
     return []
+  }
+
+  protected static normalizeType(type : string) {
+    switch (type) {
+      case 'Books and Theses': return 'book'
+      case 'Conference and Workshop Papers': return 'conference'
+      case 'Editorship': return 'proceedings'
+      case 'Journal Articles': return 'journal'
+      default: return type
+    }
   }
 }

@@ -15,4 +15,8 @@ export abstract class ArticleScraper extends Scraper {
 
     return true
   }
+
+  protected static normalizeType(type : string) {
+    return type
+  }
 }
