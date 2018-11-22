@@ -16,9 +16,9 @@ import YAML from 'yamljs'
     .option('-p, --project <file>', 'Read config from project YAML file.')
     .option('-q, --query <q>', 'Search query', '')
     .option('-d, --databases <list>', 'Comma separated list of databases to search.', list, [])
-    .option('--title', 'Title only search (scopus).')
-    .option('--scopus <key>', 'Scopus API key.')
     .option('-m, --max [n]', 'Maximum number of results.', 10)
+    .option('--scopus <key>', 'Scopus API key.')
+    .option('--title', 'Title only search (scopus).')
     .option('-s, --sqlite <database>', 'SQLite database used to store articles.', undefined)
 
     .parse(process.argv)
