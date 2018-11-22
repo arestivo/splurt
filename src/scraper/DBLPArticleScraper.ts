@@ -59,7 +59,7 @@ export class DBLPArticleScraper extends ArticleScraper {
       articles = articles.concat(validArticles)
       current += newArticles.length
 
-      bar.update(Math.min(articles.length, maximum ? maximum : current), {  })
+      bar.update(articles.length, {  })
     }
 
     bar.stop()
