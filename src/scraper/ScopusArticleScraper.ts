@@ -9,7 +9,7 @@ const parser = require('logic-query-parser')
 export class ScopusArticleScraper extends ArticleScraper {
   public uri = 'https://api.elsevier.com/content/search/scopus'
 
-  public constructor(public key? : string, public validate? : boolean) {
+  public constructor(public key? : string, public title? : boolean) {
     super()
   }
 
@@ -42,16 +42,11 @@ export class ScopusArticleScraper extends ArticleScraper {
 
     articles = maximum ? articles.slice(0, maximum) : articles
 
-    if (this.validate) {
-      const tree = parser.parse(query.replace(/\'/g, '"'))
-      articles = articles.filter(article => ScopusArticleScraper.isValidTitle(article.title, tree))
-    }
-
     return articles
   }
 
   private async queryPage(query: string, start: number, maximum: number, bar : Bar): Promise<Article[]> {
-    const json = await ScopusArticleScraper.get(this.uri, { query, start, apiKey : this.key, count : maximum ? Math.min(maximum, 200) : 200, subj: 'COMP' })
+    const json = await ScopusArticleScraper.get(this.uri, { start, query : this.title ? `TITLE(${query})` : query, apiKey : this.key, count : maximum ? Math.min(maximum, 200) : 200, subj: 'COMP' })
 
     const elements: any[] = json.data['search-results'].entry
     const total = json.data['search-results']['opensearch:totalResults']

@@ -37,6 +37,7 @@ export class ArticleDatabase {
       const conn = await sqlite.open(this.database)
       await conn.run('UPDATE article SET included = false AND excluded = false')
 
+      await conn.run('BEGIN TRANSACTION')
       articles.forEach(async article => {
         const stmt = await conn.prepare('SELECT * FROM article WHERE title = ? AND year = ? AND origin = ?')
         const existing = await stmt.get(article.title, article.year, article.origin)
@@ -67,6 +68,7 @@ export class ArticleDatabase {
             console.log(article)
           }
       })
+      await conn.run('END TRANSACTION')
     }
   }
 

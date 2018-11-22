@@ -11,7 +11,7 @@ export class SplurtFetch implements SplurtCommand<Article[]> {
     public maximum = 10,
     public databases: string[] = [],
     public scopusKey? : string,
-    public validate? : boolean) { }
+    public title? : boolean) { }
 
   public async execute() {
     this.verifyOptions()
@@ -22,7 +22,7 @@ export class SplurtFetch implements SplurtCommand<Article[]> {
           const dblp = new DBLPArticleScraper()
           return dblp.query(this.query, this.maximum)
         case 'scopus':
-          const scopus = new ScopusArticleScraper(this.scopusKey, this.validate)
+          const scopus = new ScopusArticleScraper(this.scopusKey, this.title)
           return scopus.query(this.query, this.maximum)
         default:
           console.warn(Color.yellow(`WARNING: Unknown research database: ${database}`))
