@@ -74,6 +74,8 @@ export class ScopusArticleScraper extends ArticleScraper {
   protected static normalizeType(type : string) {
     switch (type) {
       case 'Journal': return 'journal'
+      case 'Book Series': return 'journal'
+      case 'Conference Proceeding': return 'proceedings'
       default: return type
     }
   }

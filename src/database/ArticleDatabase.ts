@@ -19,7 +19,7 @@ const createCommand = `
     included BOOLEAN NOT NULL,
     excluded BOOLEAN NOT NULL,
 
-    UNIQUE (origin, title, year)
+    UNIQUE (title, year, origin)
   )
 `
 
@@ -47,20 +47,25 @@ export class ArticleDatabase {
             article.publication,
             article.authors,
             article.type,
+
             article.title,
             article.year,
             article.origin
           )
         else
-          await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
-            article.title,
-            article.year,
-            article.doi,
-            article.publication,
-            article.authors,
-            article.type,
-            article.origin
-          )
+          try {
+            await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
+              article.title,
+              article.year,
+              article.doi,
+              article.publication,
+              article.authors,
+              article.type,
+              article.origin
+            )
+          } catch (e) {
+            console.log(article)
+          }
       })
     }
   }
