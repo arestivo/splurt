@@ -62,7 +62,6 @@ export class DBLPArticleScraper extends ArticleScraper {
       bar.update(Math.min(articles.length, maximum ? maximum : current), {  })
     }
 
-    bar.update(Math.min(maximum ? maximum : current, maximum ? maximum : current), {  })
     bar.stop()
 
     return maximum ? articles.slice(0, maximum) : articles
