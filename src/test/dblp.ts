@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { DBLPArticleScraper } from '../scraper/DBLPArticleScraper'
+import { DBLPArticleScraper } from '../scraper/article/DBLPArticleScraper'
 
 describe('DBLPArticleScraper', () => {
 

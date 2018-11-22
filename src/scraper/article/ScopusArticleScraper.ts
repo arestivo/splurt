@@ -1,4 +1,4 @@
-import { Article } from '../data/Article'
+import { Article } from '../../data/Article'
 import { ArticleScraper } from './ArticleScraper'
 
 import progress, { Bar } from 'cli-progress'

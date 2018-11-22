@@ -1,25 +1,25 @@
 import { Article } from '../data/Article'
 import { ArticleDatabase } from '../database/ArticleDatabase'
-import { GoogleCiteScraper } from '../scraper/GoogleCiteScraper'
+import { ScholarDataScraper } from '../scraper/data/ScholarDataScraper'
 import { SplurtCommand } from './SplurtCommand'
 
 import progress, { Bar } from 'cli-progress'
 import Color from 'colors'
 
-export class SplurtCitations implements SplurtCommand<void> {
+export class SplurtData implements SplurtCommand<void> {
   constructor(public delay = 2, public cookie?: string, public sqlite?: string) { }
 
   public async execute() {
     this.verifyOptions()
 
-    const google = new GoogleCiteScraper(this.delay, this.cookie)
+    const google = new ScholarDataScraper(this.delay, this.cookie)
 
     if (this.sqlite !== undefined) {
       const database = await ArticleDatabase.connect(this.sqlite)
-      const articles = await database.fetchNeedsCite()
+      const articles = await database.fetchNeedsData()
 
       if (articles.length === 0) {
-        console.log(Color.green('All articles have citations!'))
+        console.log(Color.green('All articles have data!'))
       }
 
       const bar = new Bar({
@@ -29,8 +29,8 @@ export class SplurtCitations implements SplurtCommand<void> {
 
       for (let i = 0; i < articles.length; i += 1)
         try {
-          const cites = await google.getCiteCount(articles[i])
-          await database.updateCites(articles[i].title, cites)
+          const article = await google.getData(articles[i])
+          await database.updateData(article)
           bar.update(i + 1)
         } catch (e) {
           bar.stop()

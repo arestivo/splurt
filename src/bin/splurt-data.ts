@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { SplurtCitations } from '../command/SplurtCitations'
+import { SplurtData } from '../command/SplurtData'
 
 import Color from 'colors'
 import program from 'commander'
@@ -16,7 +16,7 @@ program
 
   .parse(process.argv)
 
-const splurt = new SplurtCitations(program.delay, program.cookie, program.sqlite)
+const splurt = new SplurtData(program.delay, program.cookie, program.sqlite)
 
 if (program.project) {
   try {

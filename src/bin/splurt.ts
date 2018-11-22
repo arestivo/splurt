@@ -7,7 +7,7 @@ program
 
   .command('fetch', 'Fetch article data from selected research databases.').alias('f')
   .command('exclude', 'Exclude articles according to some criteria.').alias('e')
-  .command('citations', 'Get citation data for fetched articles.').alias('c')
+  .command('data', 'Get citation and abstract data for fetched articles.').alias('d')
   .command('export', 'Export collected articles.').alias('x')
 
   .parse(process.argv)

@@ -1,7 +1,7 @@
-import { Article } from '../data/Article'
-import { ArticleScraper } from './ArticleScraper'
+import { Article } from '../../data/Article'
 
 import progress, { Bar } from 'cli-progress'
+import { ArticleScraper } from './ArticleScraper';
 
 const parser = require('logic-query-parser')
 const entities = require('html-entities').AllHtmlEntities

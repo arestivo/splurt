@@ -1,6 +1,6 @@
 import { Article } from '../data/Article'
-import { DBLPArticleScraper } from '../scraper/DBLPArticleScraper'
-import { ScopusArticleScraper } from '../scraper/ScopusArticleScraper'
+import { DBLPArticleScraper } from '../scraper/article/DBLPArticleScraper'
+import { ScopusArticleScraper } from '../scraper/article/ScopusArticleScraper'
 import { SplurtCommand } from './SplurtCommand'
 
 import Color from 'colors'

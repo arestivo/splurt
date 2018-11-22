@@ -1,5 +1,5 @@
 import { Article } from '../data/Article'
-
+import Color from 'colors'
 import sqlite from 'sqlite'
 
 const createCommand = `
@@ -14,7 +14,11 @@ const createCommand = `
     authors VARCHAR,
     type varchar,
     origin varchar,
+
     cites INTEGER,
+    abstract VARCHAR,
+    link VARCHAR,
+    bibtex VARCHAR,
 
     included BOOLEAN NOT NULL,
     excluded BOOLEAN NOT NULL,
@@ -55,7 +59,7 @@ export class ArticleDatabase {
           )
         else
           try {
-            await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, true, false)',
+            await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, true, false)',
               article.title,
               article.year,
               article.doi,
@@ -65,6 +69,7 @@ export class ArticleDatabase {
               article.origin
             )
           } catch (e) {
+            console.log(Color.red(e))
             console.log(article)
           }
       })
@@ -72,22 +77,23 @@ export class ArticleDatabase {
     }
   }
 
-  public async fetchNeedsCite() {
+  public async fetchNeedsData() {
     let articles: Article[] = []
 
     if (this.database) {
       const conn = await sqlite.open(this.database)
-      const stmt = await conn.prepare('SELECT * FROM article WHERE included = true AND excluded = false AND cites is NULL')
+      const stmt = await conn.prepare('SELECT * FROM article WHERE included = true AND excluded = false AND (cites is NULL OR abstract is NULL)')
       await stmt.each((_, article) => articles = articles.concat(article))
     }
 
     return articles
   }
 
-  public async updateCites(title: string, cites?: number) {
+  public async updateData(article: Article) {
     if (this.database) {
       const conn = await sqlite.open(this.database)
-      await conn.run('UPDATE article SET cites = ? WHERE title = ?', cites, title)
+      await conn.run('UPDATE article SET cites = ?, abstract = ?, link = ?, bibtex = ? WHERE title = ? AND year = ? AND origin = ?',
+        article.cites, article.abstract, article.link, article.bibtex, article.title, article.year, article.origin)
     }
   }
 
@@ -101,7 +107,7 @@ export class ArticleDatabase {
 
   public async getSelectedArticles(data? : string[]): Promise<any> {
     if (this.database) {
-      const columns = data ? data.join(', ') : 'id, title, year, authors, publication, doi, cites, type, origin'
+      const columns = data ? data.join(', ') : 'id, doi, title, year, authors, publication, type, origin, cites, abstract, link, bibtex'
       const conn = await sqlite.open(this.database)
       const stmt = await conn.prepare(`SELECT ${columns} FROM article WHERE included AND NOT excluded`)
       const articles = await stmt.all()

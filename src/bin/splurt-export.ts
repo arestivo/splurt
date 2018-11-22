@@ -14,7 +14,7 @@ program
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
   .option('-f, --format <format>', 'Export format.', 'csv')
-  .option('-d, --data <list>', 'Data columns to export (id, title, authors, year, publication, doi, cites).', list)
+  .option('-d, --data <list>', 'Data columns to export (id, title, authors, year, publication, doi, type, origin, cites, abstract).', list)
   .option('-s, --sqlite <database>', 'SQLite database used to store articles.')
 
   .parse(process.argv)

@@ -7,6 +7,10 @@ export interface Article {
   doi?: string
   publication?: string
   authors?: string
-  cites?: number
   type?: string
+
+  cites?: number
+  abstract?: string
+  link?: string
+  bibtex?: string
 }

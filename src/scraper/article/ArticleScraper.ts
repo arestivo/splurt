@@ -1,4 +1,4 @@
-import { Scraper } from './Scraper'
+import { Scraper } from '../Scraper'
 
 export abstract class ArticleScraper extends Scraper {
   protected static isValidTitle(title : string, tree : any) : boolean {

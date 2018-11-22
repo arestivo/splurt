@@ -10,7 +10,7 @@
   "bin": {
     "splurt": "./build/bin/splurt.js",
     "splurt-fetch": "./build/bin/splurt-fetch.js",
-    "splurt-citations": "./build/bin/splurt-citations.js",
+    "splurt-data": "./build/bin/splurt-data.js",
     "splurt-exclude": "./build/bin/splurt-exclude.js",
     "splurt-export": "./build/bin/splurt-export.js"
   },
