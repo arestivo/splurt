@@ -28,6 +28,7 @@
     "@types/cli-progress": "^1.8.0",
     "@types/fast-levenshtein": "0.0.1",
     "@types/mocha": "^5.2.5",
+    "@types/mustache": "^0.8.32",
     "@types/node": "^10.12.9",
     "@types/table": "^4.0.5",
     "@types/yamljs": "^0.2.30",

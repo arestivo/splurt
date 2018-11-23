@@ -3,6 +3,10 @@ import { SplurtCommand } from './SplurtCommand'
 import Color from 'colors'
 import { table } from 'table'
 
+import fs from 'fs'
+import mustache from 'mustache'
+import { template } from '../templates/articles'
+
 const jsonexport = require('jsonexport')
 
 export class SplurtExport implements SplurtCommand<void> {
@@ -30,6 +34,10 @@ export class SplurtExport implements SplurtCommand<void> {
             return columns
           })
           console.log(table(data))
+          break
+        case 'html':
+          const html = mustache.render(template, {articles})
+          console.log(html)
           break
         default:
           console.log(Color.red(`Unknown format: ${this.format}`))
