@@ -5,6 +5,7 @@ import cheerio from 'cheerio'
 import delay from 'delay'
 
 import levenshtein from 'fast-levenshtein'
+import { AbstractScraper } from './AbstractScraper'
 
 export class ScholarDataScraper extends DataScraper {
   constructor(public throttle: number = 2, public cookie?: string) {
@@ -20,11 +21,9 @@ export class ScholarDataScraper extends DataScraper {
     const $ = await this.getCheerio(article)
     const articles = $('.gs_r')
 
-    articles.each((_, element) => {
+    for (const element of articles.toArray()) {
       const title = $(element).find('h3 a').text()
-      if (levenshtein.get(article.title.toLowerCase(), title.toLowerCase(), { useCollator: true}) < 3 ) {
-        article.abstract = $(element).find('.gs_rs').text()
-
+      if (levenshtein.get(article.title.toLowerCase(), title.toLowerCase(), { useCollator: true }) < 3) {
         const citeText = $(element).find('.gs_or_cit').next().text()
         if (citeText.startsWith('Cited by')) {
           const matches = citeText.match(/\d+/)
@@ -32,8 +31,10 @@ export class ScholarDataScraper extends DataScraper {
         } else article.cites = 0
 
         article.link = $(element).find('h3 a').attr('href')
+        article.abstract = await AbstractScraper.getAbstract(article.link)
+        if (article.abstract === '') article.abstract = 'ASKED FOR ABSTRACT AND ALL I GET WAS THIS LOUSY T-SHIRT'
       }
-    })
+    }
 
     return article
   }

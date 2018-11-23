@@ -36,7 +36,7 @@ export class SplurtExport implements SplurtCommand<void> {
           console.log(table(data))
           break
         case 'html':
-          const html = mustache.render(template, {articles})
+          const html = mustache.render(template, { articles })
           console.log(html)
           break
         default:
