@@ -33,27 +33,27 @@ Please be aware that you might need to prefix some of these commands with `sudo`
 ## Fetch
 
 ```
-Usage: splurt fetch|f [options]
-
 Options:
   -V, --version            output the version number
   -p, --project <file>     Read config from project YAML file.
   -q, --query <q>          Search query (default: "")
   -d, --databases <list>   Comma separated list of databases to search. (default: [])
   -m, --max [n]            Maximum number of results. (default: 10)
+  --scopus <key>           Scopus API key.
+  --title                  Title only search (scopus).
   -s, --sqlite <database>  SQLite database used to store articles.
   -h, --help               output usage information
 ```
 
-## Citations
+## Data
 
 ```
-Usage: splurt citations|c [options]
+Usage: splurt data|d [options]
 
 Options:
   -V, --version            output the version number
   -p, --project <file>     Read config from project YAML file.
-  -d, --delay <s>          Delay between requests. (default: 2)
+  -d, --delay <s>          Delay between requests. (default: 10)
   -c, --cookie <c>         Cookie to add to header.
   -s, --sqlite <database>  SQLite database used to store articles.
   -h, --help               output usage information
@@ -70,6 +70,7 @@ Options:
   -e, --exclude <criteria>  Comma separated exclusion criteria using SQL.
   -s, --sqlite <database>   SQLite database used to store articles.
   -h, --help                output usage information
+
 ```
 
 ## Export
@@ -81,7 +82,7 @@ Options:
   -V, --version            output the version number
   -p, --project <file>     Read config from project YAML file.
   -f, --format <format>    Export format. (default: "csv")
-  -d, --data <list>        Data columns to export (id, title, authors, year, publication, doi, cites).
+  -d, --data <list>        Data columns to export (id, title, authors, year, publication, doi.
   -s, --sqlite <database>  SQLite database used to store articles.
   -h, --help               output usage information
 ```
@@ -97,7 +98,7 @@ splurt exclude -s articles.db -e 'year < 2000, year < 2016 AND cites = 0'
 ```
 
 ```
-splurt citations -s articles.db -c 'COOKIE=value'
+splurt data -s articles.db -c 'COOKIE=value'
 ```
 
 ```
@@ -132,7 +133,7 @@ Using projects:
 
 ```
 splurt fetch -p project.yaml -s articles.db
-splurt citations -p project.yaml -s articles.db
+splurt data -p project.yaml -s articles.db
 splurt exclude -p project.yaml -s articles.db
 splurt export -p project.yaml -s articles.db
 ```
