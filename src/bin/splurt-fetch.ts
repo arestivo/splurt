@@ -11,7 +11,7 @@ import YAML from 'yamljs'
   const list = (l: string) => l.split(',').map(v => v.trim())
 
   program
-    .version('0.0.11')
+    .version('0.0.12')
 
     .option('-p, --project <file>', 'Read config from project YAML file.')
     .option('-q, --query <q>', 'Search query', '')
