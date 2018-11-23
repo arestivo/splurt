@@ -23,7 +23,7 @@ export class SplurtData implements SplurtCommand<void> {
       }
 
       const bar = new Bar({
-        format: 'citations [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
+        format: 'scholar [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
       }, progress.Presets.shades_classic)
       bar.start(articles.length, 0)
 

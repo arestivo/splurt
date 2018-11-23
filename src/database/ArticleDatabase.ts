@@ -59,7 +59,7 @@ export class ArticleDatabase {
           )
         else
           try {
-            await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, true, false)',
+            await conn.run('INSERT INTO article VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, NULL, true, false)',
               article.title,
               article.year,
               article.doi,

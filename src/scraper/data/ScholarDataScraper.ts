@@ -1,9 +1,10 @@
 import { Article } from '../../data/Article'
 import { DataScraper } from './DataScraper'
-import Color from 'colors'
 
 import cheerio from 'cheerio'
 import delay from 'delay'
+
+import levenshtein from 'fast-levenshtein'
 
 export class ScholarDataScraper extends DataScraper {
   constructor(public throttle: number = 2, public cookie?: string) {
@@ -21,7 +22,7 @@ export class ScholarDataScraper extends DataScraper {
 
     articles.each((_, element) => {
       const title = $(element).find('h3 a').text()
-      if (article.title.toLowerCase() === title.toLowerCase()) {
+      if (levenshtein.get(article.title.toLowerCase(), title.toLowerCase(), { useCollator: true}) < 3 ) {
         article.abstract = $(element).find('.gs_rs').text()
 
         const citeText = $(element).find('.gs_or_cit').next().text()
@@ -29,6 +30,8 @@ export class ScholarDataScraper extends DataScraper {
           const matches = citeText.match(/\d+/)
           if (matches !== null) article.cites = parseInt(matches[0])
         } else article.cites = 0
+
+        article.link = $(element).find('h3 a').attr('href')
       }
     })
 
