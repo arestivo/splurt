@@ -35,6 +35,7 @@ export class SplurtData implements SplurtCommand<void> {
         } catch (e) {
           bar.stop()
           console.log(Color.yellow('Gimme cookie!'))
+          console.log(e)
           process.exit(0)
         }
       bar.stop()

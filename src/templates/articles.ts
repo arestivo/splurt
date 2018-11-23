@@ -2,6 +2,7 @@ export const template = `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       html {
         background-color: #EEE;
@@ -27,21 +28,22 @@ export const template = `<!DOCTYPE html>
       article h3 {
         margin-bottom: 0.2em;
       }
-      article header div {
-        font-size: 0.9em;
+      article .authors {
         color: #2323c7;
       }
+      article .publication {
+        font-size: 0.9em;
+        color: #666;
+      }
       article .abstract {
-        margin: 1em 2em;
+        margin: 1em 0;
         color: #444;
+        max-height: 20.5em; overflow: hidden;
+        transition: max-height 2s;
       }
       article footer {
         font-size: 0.9em;
         color: #2323c7;
-      }
-      article .abstract {
-        max-height: 20.5em; overflow: hidden;
-        transition: max-height 2s;
       }
       </style>
       <script>
@@ -61,14 +63,13 @@ export const template = `<!DOCTYPE html>
         <article>
           <header>
             <h3><a href="{{link}}">{{title}}</a></h3>
-            <div>
-            <span class="authors">{{authors}}</span> : <span class="publication">{{publication}}</span>
-            </div>
+            <div class="authors">{{authors}}</div>
+            <div class="publication">{{publication}}</div>
           </header>
           <p class="abstract" onclick="toggle(event.target)">{{abstract}}</span>
           <footer>
             <span class="type">{{Type}}</span>
-            {{#cites}}<span class="cites">Cited by {{/cites}}<span class="number">{{cites}}</span>
+            {{#cites}}<span class="cites">Cited by <span class="number">{{cites}}</span>{{/cites}}
           </footer>
         </article>
       {{/articles}}

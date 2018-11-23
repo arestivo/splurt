@@ -15,8 +15,8 @@ export class ScholarDataScraper extends DataScraper {
   public async getData(article: Article): Promise<Article> {
     await delay(Math.random() * (this.throttle * 1000))
 
-    article.cites = undefined
-    article.abstract = undefined
+    article.cites = 0
+    article.abstract = ''
 
     const $ = await this.getCheerio(article)
     const articles = $('.gs_r')
