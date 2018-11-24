@@ -11,7 +11,7 @@ import YAML from 'yamljs'
   const list = (l: string) => l.split(',').map(v => v.trim())
 
   program
-    .version('0.0.12')
+    .version('0.0.13')
 
     .option('-p, --project <file>', 'Read config from project YAML file.')
     .option('-q, --query <q>', 'Search query', '')
@@ -23,7 +23,7 @@ import YAML from 'yamljs'
 
     .parse(process.argv)
 
-  const splurt = new SplurtFetch(program.query, program.maximum, program.databases, program.scopus, program.title)
+  const splurt = new SplurtFetch(program.query, program.max, program.databases, program.scopus, program.title)
   let sqlite: string = program.sqlite
 
   if (program.project) {

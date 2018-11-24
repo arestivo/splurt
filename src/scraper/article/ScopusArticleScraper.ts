@@ -46,7 +46,7 @@ export class ScopusArticleScraper extends ArticleScraper {
   }
 
   private async queryPage(query: string, start: number, maximum: number, bar : Bar): Promise<Article[]> {
-    const json = await ScopusArticleScraper.get(this.uri, { start, query : this.title ? `TITLE(${query})` : query, apiKey : this.key, count : maximum ? Math.min(maximum, 200) : 200, subj: 'COMP' })
+    const json = await ScopusArticleScraper.get(this.uri, { start, query : this.title ? `TITLE(${query})` : query, apiKey : this.key, count : maximum ? Math.min(maximum, 25) : 25, subj: 'COMP' })
 
     const elements: any[] = json.data['search-results'].entry
     const total = json.data['search-results']['opensearch:totalResults']
