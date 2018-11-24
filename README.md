@@ -116,17 +116,22 @@ fetch:
   query: 'blockchain AND cloud'
   databases: [dblp,scopus]
   maximum: 20
+  scopus: SCOPUS_API_KEY
 
 exclude:
+  # SQL like WHERE using these columns: id, doi, title, year, authors, publication, 
+  # type, origin, cites, abstract, link, bibtex
   criteria: ['cites = 0 OR cites IS NULL','year < 2000']
 
-citations:
+data:
   delay: 2
   cookie: 'COOKIE=value'
 
 export:
+  # id, doi, title, year, authors, publication, 
+  # type, origin, cites, abstract, link, bibtex
   data: [title, year, cites]
-  format: table
+  format: table # can be csv,json,table
 ```
 
 Using projects:
