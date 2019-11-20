@@ -17,17 +17,17 @@ export class SplurtExport implements SplurtCommand<void> {
 
     if (this.sqlite !== undefined) {
       const database = await ArticleDatabase.connect(this.sqlite)
-      const articles = await database.getSelectedArticles(this.data)
+      const articles = await database.getSelectedArticles(this.format == "html" ? undefined : this.data)
 
       switch (this.format) {
         case 'csv':
-          jsonexport(articles, { rowDelimiter: ',', forceTextDelimiter : true }, (err : any, csv : any) => {
+          jsonexport(articles, { rowDelimiter: ',', forceTextDelimiter: true }, (err: any, csv: any) => {
             if (err) return console.log(err)
             console.log(csv)
           })
           break
         case 'table':
-          const data = articles.map((article:any) => {
+          const data = articles.map((article: any) => {
             const columns: any[] = []
             for (const key in article)
               columns.push(article[key])

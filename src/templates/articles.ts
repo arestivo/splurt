@@ -52,6 +52,18 @@ export const template = `<!DOCTYPE html>
           e.style.overflow = 'hidden'
         }
       </script>
+      <script>
+        function copyText(target) {
+          var el = document.getElementById(target);
+          var textArea = document.createElement("textarea");
+          textArea.value = el.textContent;
+          document.body.appendChild(textArea);
+          textArea.select();
+          textArea.setSelectionRange(0, 99999)
+          document.execCommand("Copy");
+          textArea.remove();
+        }
+      </script>
   </head>
   <body>
     <header>
@@ -70,6 +82,9 @@ export const template = `<!DOCTYPE html>
           <footer>
             <span class="type">{{Type}}</span>
             {{#cites}}<span class="cites">Cited by <span class="number">{{cites}}</span>{{/cites}}
+            <br>
+            <span>DOI: <span id="paper_{{id}}">{{doi}}</span></span>
+            <button onclick="copyText('paper_{{id}}')">copy</button>
           </footer>
         </article>
       {{/articles}}
