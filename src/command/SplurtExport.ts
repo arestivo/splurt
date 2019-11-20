@@ -64,19 +64,33 @@ export class SplurtExport implements SplurtCommand<void> {
       }
       // create export folder if not exists
       const dir = 'export' //TODO: convert to config option
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir)
+      const errorLog = `${dir}/errorLog.txt`
+
+      // create stream for error log
+      if (fs.existsSync(errorLog)) fs.unlinkSync(errorLog)
+      let pdfErrorLog = fs.createWriteStream(errorLog, { flags: 'a' })
+
       // download each article
       articles.forEach(async article => {
         // sleep to avoid captchas
         await delay(Math.random() * (2 * 1000))
 
+        // get scihub page
         const url = `${this.scihub}/${article.doi}`
-        const scihubHtml = await axios.get(url)
+        const scihubHtml = await axios.get(url).catch(() => {
+          pdfErrorLog.write(`Unable to access scihub for:\n${JSON.stringify(article)}\n-----\n`)
+          return
+        })
+        if (scihubHtml === undefined) return
+        // get the pdf url from that page
         const $doc = cheerio.load(scihubHtml.data)
         const iframe = $doc('iframe')
-
+        //download pdf from iframe src
         let pdfUrl = iframe.attr('src')
         if (iframe !== undefined && pdfUrl !== undefined) {
+          let sanitize = require("sanitize-filename")
+          // fix urls that are missing the protocol
           pdfUrl = pdfUrl.substring(0, 2) == "//" ? "https:" + pdfUrl : pdfUrl
           axios({
             method: 'get',
@@ -84,18 +98,18 @@ export class SplurtExport implements SplurtCommand<void> {
             responseType: 'stream',
             timeout: 25000 // 25s
           }).then((response) => {
-            const name = article.title ? article.title : article.doi
+            const filename = sanitize(article.title ? article.title : article.doi)
             //TODO: make name only have ascii chars
-            response.data.pipe(fs.createWriteStream(`${dir}/${name}.pdf`), { flags: 'w' });
+            response.data.pipe(fs.createWriteStream(`${dir}/${filename}.pdf`), { flags: 'w' })
           }).catch((e) => {
-            console.error(Color.red('Unable to download:'))
-            console.error(article)
+            pdfErrorLog.write(`Unable to download:\n${JSON.stringify(article)}\n${e}\n-----\n`)
           })
         } else {
-          console.error(Color.red('Unable to download (not available)'))
-          console.error(article)
+          pdfErrorLog.write(`Unable to download:\n${JSON.stringify(article)}\n-----\n`)
         }
       })
+      //delete error log if empty
+      if (fs.statSync(errorLog).size == 0) fs.unlinkSync(errorLog)
     }
   }
 }
