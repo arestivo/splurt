@@ -99,7 +99,6 @@ export class SplurtExport implements SplurtCommand<void> {
             timeout: 25000 // 25s
           }).then((response) => {
             const filename = sanitize(article.title ? article.title : article.doi)
-            //TODO: make name only have ascii chars
             response.data.pipe(fs.createWriteStream(`${dir}/${filename}.pdf`), { flags: 'w' })
           }).catch((e) => {
             pdfErrorLog.write(`Unable to download:\n${JSON.stringify(article)}\n${e}\n-----\n`)
