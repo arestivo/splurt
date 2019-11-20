@@ -137,9 +137,12 @@ data:
 export:
   # id, doi, title, year, authors, publication, 
   # type, origin, cites, abstract, link, bibtex
-  data: [title, year, cites]
+  data: [title, doi, year, cites]
   # if the format is html, the data attribute is ignored
   format: table # can be csv,json,table,html
+  # if scihub is specified, available pdfs will be downloaded
+  # requires the (doi attribute)
+  scihub: 'https://sci-hub.se/' # current sci-hub valid url
 ```
 
 Using projects:
