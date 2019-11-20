@@ -148,8 +148,8 @@ export:
 Using projects:
 
 ```
-splurt fetch -p project.yaml -s articles.db
-splurt data -p project.yaml -s articles.db
-splurt exclude -p project.yaml -s articles.db
-splurt export -p project.yaml -s articles.db
+splurt fetch -p project.yaml
+splurt data -p project.yaml
+splurt exclude -p project.yaml
+splurt export -p project.yaml
 ```
