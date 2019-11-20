@@ -109,7 +109,7 @@ splurt export -s articles.db -d 'title,year,cites' -f table
 
 Project ```project.yaml``` file example:
 
-```
+```yaml
 sqlite: articles.db
 
 fetch:
