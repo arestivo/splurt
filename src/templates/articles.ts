@@ -70,6 +70,8 @@ export const template = `<!DOCTYPE html>
           <footer>
             <span class="type">{{Type}}</span>
             {{#cites}}<span class="cites">Cited by <span class="number">{{cites}}</span>{{/cites}}
+            <br>
+            <span>DOI: <a href="https://doi.org/{{doi}}">{{doi}}</a></span>
           </footer>
         </article>
       {{/articles}}
