@@ -83,7 +83,6 @@ export const template = `<!DOCTYPE html>
             <span class="type">{{Type}}</span>
             {{#cites}}<span class="cites">Cited by <span class="number">{{cites}}</span>{{/cites}}
             <br>
-
             <span>DOI: <span id="paper_{{id}}">{{doi}}</span></span>
             <button onclick="copyText('paper_{{id}}')">copy</button>
           </footer>
