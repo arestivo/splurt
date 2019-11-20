@@ -3,7 +3,7 @@
 import program from 'commander'
 
 program
-  .version('0.0.13')
+  .version('0.0.20')
 
   .command('fetch', 'Fetch article data from selected research databases.').alias('f')
   .command('exclude', 'Exclude articles according to some criteria.').alias('e')
