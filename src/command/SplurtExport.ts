@@ -65,7 +65,7 @@ export class SplurtExport implements SplurtCommand<void> {
       // create export folder if not exists
       const dir = 'export' //TODO: convert to config option
       if (!fs.existsSync(dir)) fs.mkdirSync(dir)
-      const errorLog = `${dir}/errorLog.txt`
+      const errorLog = `${dir}/error_log.txt`
 
       // create stream for error log
       if (fs.existsSync(errorLog)) fs.unlinkSync(errorLog)
