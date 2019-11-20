@@ -131,7 +131,8 @@ export:
   # id, doi, title, year, authors, publication, 
   # type, origin, cites, abstract, link, bibtex
   data: [title, year, cites]
-  format: table # can be csv,json,table
+  # if the format is html, the data attribute is ignored
+  format: table # can be csv,json,table,html
 ```
 
 Using projects:
