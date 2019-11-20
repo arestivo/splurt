@@ -107,6 +107,13 @@ splurt export -s articles.db -d 'title,year,cites' -f table
 
 ## Project
 
+Requires:
+1. `SCOPUS_API_KEY` that can be obtained by going [here](https://dev.elsevier.com/) and following the "Get API Key" instructions.
+2. `cookie` from [google scholar](https://scholar.google.com/):
+   1. browse to incognito window
+   2. open available cookies and copy the value from the `GSP` cookie
+   3. paste it like `cookie: "LM=12345678:S=example"`
+
 Project ```project.yaml``` file example:
 
 ```

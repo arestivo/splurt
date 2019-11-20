@@ -21,12 +21,11 @@ const splurt = new SplurtData(program.delay, program.cookie, program.sqlite)
 if (program.project) {
   try {
     const options = YAML.load(program.project)
-
-    if (options.citations) {
-      splurt.delay = options.citations.delay || splurt.delay
-      splurt.cookie = options.citations.cookie || splurt.cookie
+    
+    if (options.data) {
+      splurt.delay = options.data.delay || splurt.delay
+      splurt.cookie = options.data.cookie || splurt.cookie
     }
-
     splurt.sqlite = options.sqlite || splurt.sqlite
   } catch (e) {
     console.error(Color.red(e.message))
