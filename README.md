@@ -80,10 +80,10 @@ Usage: splurt export|x [options]
 
 Options:
   -V, --version            output the version number
-  -p, --project <file>     Read config from project YAML file.
-  -f, --format <format>    Export format. (default: "csv")
-  -d, --data <list>        Data columns to export (id, title, authors, year, publication, doi.
+  -p, --project <file>     Read config from project YAML file.  -f, --format <format>    Export format. (default: "csv")    
+  -d, --data <list>        Data columns to export (id, title, authors, year, publication, doi, type, origin, cites, abstract).
   -s, --sqlite <database>  SQLite database used to store articles.
+  -h, --scihub <url>       Working url for sci-hub, if not specified no pdfs will be downloaded
   -h, --help               output usage information
 ```
 
