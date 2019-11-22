@@ -8,7 +8,7 @@ import levenshtein from 'fast-levenshtein'
 import { AbstractScraper } from './AbstractScraper'
 
 export class ScholarDataScraper extends DataScraper {
-  constructor(public throttle: number = 2, public cookie?: string) {
+  constructor(public throttle: number = 2, public cookies?: string[]) {
     super()
   }
 
@@ -39,17 +39,22 @@ export class ScholarDataScraper extends DataScraper {
     return article
   }
 
-  private async getHtml(q : string) {
-    const html = await ScholarDataScraper.get(
-      'https://scholar.google.com/scholar',
-      { q }, { Cookie: this.cookie }
-    )
-    if (html.data.includes('Please show you&#39;re not a robot'))
-      throw (new Error('Captcha detected'))
-    return html.data
+  private async getHtml(q: string) {
+    if (!this.cookies) throw (new Error('No cookies found'))
+
+    while (this.cookies.length > 0) {
+      const html = await ScholarDataScraper.get(
+        'https://scholar.google.com/scholar',
+        { q }, { Cookie: this.cookies[0] }
+      )
+      if (html.data.includes('Please show you&#39;re not a robot')) {
+        this.cookies.shift()
+      } else return html.data
+    }
+    throw (new Error('Captcha detected'))
   }
 
-  private async getCheerio(article : Article) {
+  private async getCheerio(article: Article) {
     if (article.doi) {
       const html = await this.getHtml(article.doi)
       const $ = cheerio.load(html)
