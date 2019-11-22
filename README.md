@@ -133,6 +133,9 @@ exclude:
 data:
   delay: 2
   cookie: 'COOKIE=value'
+  # for multiple requests you can add multiple valid cookies
+  # if one stops working it is removed until none are left
+  cookies: ['COOKIE=value', 'COOKIE=value']
 
 export:
   # id, doi, title, year, authors, publication, 
