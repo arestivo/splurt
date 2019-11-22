@@ -7,7 +7,7 @@ import program from 'commander'
 import YAML from 'yamljs'
 
 program
-  .version('0.0.13')
+  .version('0.0.20')
 
   .option('-p, --project <file>', 'Read config from project YAML file.')
   .option('-d, --delay <s>', 'Delay between requests.', 10)
