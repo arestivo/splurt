@@ -23,7 +23,7 @@ if (program.project) {
     const options = YAML.load(program.project)
     if (options.data) {
       splurt.delay = options.data.delay || splurt.delay
-      splurt.cookies = options.data.cookies || (options.data.cookie || splurt.cookies).split(",")
+      splurt.cookies = options.data.cookies || (options.data.cookie || splurt.cookies || "").split(",")
     }
     splurt.sqlite = options.sqlite || splurt.sqlite
   } catch (e) {

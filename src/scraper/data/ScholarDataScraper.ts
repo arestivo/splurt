@@ -42,6 +42,9 @@ export class ScholarDataScraper extends DataScraper {
   private async getHtml(q: string) {
     if (!this.cookies) throw (new Error('No cookies found'))
 
+    const rotate = this.cookies.shift() || ""
+    this.cookies.push(rotate)
+
     while (this.cookies.length > 0) {
       const html = await ScholarDataScraper.get(
         'https://scholar.google.com/scholar',
