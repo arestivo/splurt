@@ -2,6 +2,7 @@ export interface Article {
   origin: string
 
   title: string
+  sanitized?: string
   year: number
 
   doi?: string
