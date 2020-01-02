@@ -40,7 +40,12 @@ export class SplurtExport implements SplurtCommand<void> {
           console.log(table(data))
           break
         case 'html':
-          const html = mustache.render(template, { articles })
+          let sanitize = require("sanitize-filename")
+          const articles_sanitized = articles.map(a => {
+            a.sanitized = sanitize(a.title ? a.title : a.doi)
+            return a
+          })
+          const html = mustache.render(template, { articles_sanitized })
           console.log(html)
           break
         default:
@@ -56,7 +61,7 @@ export class SplurtExport implements SplurtCommand<void> {
       throw new Error('No sqlite database chosen!')
   }
 
-  public download(articles: Article[]) {
+  public async download(articles: Article[]) {
     if (this.scihub !== undefined) {
       if (this.data !== undefined && this.data.indexOf('doi') === -1) {
         console.error(Color.yellow('"doi" must be in data for pdf files to be downloaded, skipping download...'))
@@ -69,27 +74,34 @@ export class SplurtExport implements SplurtCommand<void> {
 
       // create stream for error log
       if (fs.existsSync(errorLog)) fs.unlinkSync(errorLog)
-      let pdfErrorLog = fs.createWriteStream(errorLog, { flags: 'a' })
+      let errors = ""
+      // let pdfErrorLog = fs.createWriteStream(errorLog, { flags: 'a' })
 
-      // download each article
-      articles.forEach(async article => {
+      for (const article of articles) {
+        // skip if file already exists
+        let sanitize = require("sanitize-filename")
+        let filename = sanitize(article.title ? article.title : article.doi)
+        filename = `${dir}/${filename}.pdf`
+        if (fs.existsSync(filename)) continue
+
         // sleep to avoid captchas
-        await delay(Math.random() * (2 * 1000))
+        await delay(Math.random() * (4 * 1000))
 
         // get scihub page
         const url = `${this.scihub}/${article.doi}`
         const scihubHtml = await axios.get(url).catch(() => {
-          pdfErrorLog.write(`Unable to access scihub for:\n${JSON.stringify(article)}\n-----\n`)
+          errors += `Unable to access scihub for:\n${url}\n-----\n`
           return
         })
-        if (scihubHtml === undefined) return
+        if (scihubHtml === undefined) continue
+
         // get the pdf url from that page
         const $doc = cheerio.load(scihubHtml.data)
         const iframe = $doc('iframe')
+
         //download pdf from iframe src
         let pdfUrl = iframe.attr('src')
         if (iframe !== undefined && pdfUrl !== undefined) {
-          let sanitize = require("sanitize-filename")
           // fix urls that are missing the protocol
           pdfUrl = pdfUrl.substring(0, 2) == "//" ? "https:" + pdfUrl : pdfUrl
           axios({
@@ -98,17 +110,23 @@ export class SplurtExport implements SplurtCommand<void> {
             responseType: 'stream',
             timeout: 25000 // 25s
           }).then((response) => {
-            const filename = sanitize(article.title ? article.title : article.doi)
-            response.data.pipe(fs.createWriteStream(`${dir}/${filename}.pdf`), { flags: 'w' })
+            console.error(pdfUrl);
+            const stream = response.data.pipe(fs.createWriteStream(filename), { flags: 'w' })
+            stream.on('finish', () => {
+              if (fs.readFileSync(filename).toString().substring(0, 5) === "<html") {
+                fs.unlinkSync(filename)
+                errors += `Unable to download '${filename}':\n${pdfUrl}\nCATPCHA DETECTED IN SCIHUB\n-----\n`
+              }
+            })
           }).catch((e) => {
-            pdfErrorLog.write(`Unable to download:\n${JSON.stringify(article)}\n${e}\n-----\n`)
+            errors += `Unable to download '${filename}':\n${pdfUrl}\n${e.message}\n-----\n`
           })
         } else {
-          pdfErrorLog.write(`Unable to download:\n${JSON.stringify(article)}\n-----\n`)
+          errors += `Unable to download '${url}'\n${filename}\n-----\n`
         }
-      })
+      }
       //delete error log if empty
-      if (fs.statSync(errorLog).size == 0) fs.unlinkSync(errorLog)
+      if (errors.length != 0) fs.writeFileSync(errorLog, errors)
     }
   }
 }
