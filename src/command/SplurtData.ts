@@ -7,12 +7,12 @@ import progress, { Bar } from 'cli-progress'
 import Color from 'colors'
 
 export class SplurtData implements SplurtCommand<void> {
-  constructor(public delay = 2, public cookie?: string, public sqlite?: string) { }
+  constructor(public delay = 2, public cookies?: string[], public sqlite?: string) { }
 
   public async execute() {
     this.verifyOptions()
 
-    const google = new ScholarDataScraper(this.delay, this.cookie)
+    const google = new ScholarDataScraper(this.delay, this.cookies)
 
     if (this.sqlite !== undefined) {
       const database = await ArticleDatabase.connect(this.sqlite)
