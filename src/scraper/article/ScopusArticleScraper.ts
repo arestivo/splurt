@@ -9,7 +9,7 @@ const parser = require('logic-query-parser')
 export class ScopusArticleScraper extends ArticleScraper {
   public uri = 'https://api.elsevier.com/content/search/scopus'
 
-  public constructor(public key? : string, public title? : boolean) {
+  public constructor(public key?: string, public title?: boolean) {
     super()
   }
 
@@ -26,7 +26,7 @@ export class ScopusArticleScraper extends ArticleScraper {
       format: 'scopus [{bar}] {percentage}% | ETA: {eta}s | {value}/{total}'
     }, progress.Presets.shades_classic)
 
-    bar.start(maximum || 1, 0, { })
+    bar.start(maximum || 1, 0, {})
 
     while (!maximum || articles.length < maximum) {
       const newArticles = await this.queryPage(query, current, maximum, bar)
@@ -35,7 +35,7 @@ export class ScopusArticleScraper extends ArticleScraper {
       articles = articles.concat(newArticles)
       current += newArticles.length
 
-      bar.update(Math.min(current, maximum ? maximum : current), { })
+      bar.update(Math.min(current, maximum ? maximum : current), {})
     }
 
     bar.stop()
@@ -45,19 +45,19 @@ export class ScopusArticleScraper extends ArticleScraper {
     return articles
   }
 
-  private async queryPage(query: string, start: number, maximum: number, bar : Bar): Promise<Article[]> {
-    const json = await ScopusArticleScraper.get(this.uri, { start, query : this.title ? `TITLE(${query})` : query, apiKey : this.key, count : maximum ? Math.min(maximum, 25) : 25, subj: 'COMP' })
+  private async queryPage(query: string, start: number, maximum: number, bar: Bar): Promise<Article[]> {
+    const json = await ScopusArticleScraper.get(this.uri, { start, query: this.title ? `TITLE(${query})` : query, apiKey: this.key, count: maximum ? Math.min(maximum, 25) : 25, subj: 'COMP' })
 
     const elements: any[] = json.data['search-results'].entry
     const total = json.data['search-results']['opensearch:totalResults']
 
-    bar.setTotal(Math.min(total , maximum ? maximum : total))
+    bar.setTotal(Math.min(total, maximum ? maximum : total))
 
     return elements ? elements.map(
       (e: any) => ({
         origin: 'scopus',
         title: e['dc:title'],
-        year: e['prism:coverDate'].match(/\d{4}/)[0],
+        year: e['prism:coverDate'] !== undefined ? e['prism:coverDate'].match(/\d{4}/)[0] : undefined,
         doi: e['prism:doi'],
         publication: e['prism:publicationName'],
         authors: e['dc:creator'],
@@ -66,7 +66,7 @@ export class ScopusArticleScraper extends ArticleScraper {
     ) : [] // No articles
   }
 
-  protected static normalizeType(type : string) {
+  protected static normalizeType(type: string) {
     switch (type) {
       case 'Journal': return 'journal'
       case 'Book Series': return 'journal'
