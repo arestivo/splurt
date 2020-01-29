@@ -71,7 +71,7 @@ export const template = `<!DOCTYPE html>
       <h2>A Systematic Literary Review Tool</h2>
     </header>
     <main>
-      {{#articles}}
+      {{#articles_sanitized}}
         <article>
           <header>
             <h3><a href="{{link}}">{{title}}</a></h3>
@@ -85,9 +85,11 @@ export const template = `<!DOCTYPE html>
             <br>
             <span>DOI: <span id="paper_{{id}}">{{doi}}</span></span>
             <button onclick="copyText('paper_{{id}}')">copy</button>
+            <br>
+            <a href="export/{{sanitized}}.pdf">Local pdf</a>
           </footer>
         </article>
-      {{/articles}}
+      {{/articles_sanitized}}
     </main>
   </body>
 </html>`

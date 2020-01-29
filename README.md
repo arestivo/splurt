@@ -87,6 +87,8 @@ Options:
   -h, --help               output usage information
 ```
 
+When downloading from scihub, some may fail due to catpchas, these will be recorded in `export/error_log.txt` and the operation can be repeated until all are downloaded or, if the number is small it can be done by hand by following the links on the error_log. 
+
 ## Examples
 
 ```
