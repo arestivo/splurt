@@ -147,7 +147,7 @@ export:
   format: table # can be csv,json,table,html
   # if scihub is specified, available pdfs will be downloaded
   # requires the (doi attribute)
-  scihub: 'https://sci-hub.se/' # current sci-hub valid url
+  scihub: 'https://sci-hub.st/' # current sci-hub valid url
 ```
 
 Using projects:
